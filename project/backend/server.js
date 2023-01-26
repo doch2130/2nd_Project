@@ -8,10 +8,6 @@ const app = express();
 dotenv.config({
   path: './config/.env',
 });
-// console.log(process.env.PORT);
-// console.log(process.env.NCP_SENS_ACCESS);
-// console.log(process.env.NCP_SENS_SECRET);
-// console.log(process.env.NCP_SENS_ID);
 
 app.set('view engine', 'ejs');
 // app.use('/static', express.static(__dirname + '/public'));
