@@ -46,7 +46,6 @@ module.exports = {
 
       const hmac = CryptoJS.algo.HMAC.create(
         CryptoJS.algo.SHA256,
-        // eslint-disable-next-line comma-dangle
         sensSecretKey
       );
 
