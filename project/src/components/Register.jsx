@@ -15,6 +15,7 @@ export default function Register() {
   const [showPwd, setShowPwd ] = useState(false);
   const [showPwdDiv, setShowPwdDiv] = useState(false);
   const inputPwd = useRef();
+  const phoneCertifiDiv = useRef();
   
   function toggleShowPwd() {
     setShowPwd(!showPwd);
@@ -27,6 +28,12 @@ export default function Register() {
     } else {
       setShowPwdDiv(true);
     }
+  }
+
+  function phoneCertifiRequest() {
+    phoneCertifiDiv.current.style.visibility = 'visible';
+    phoneCertifiDiv.current.children[0].focus();
+    phoneCertifiDiv.current.children[2].disabled = false;
   }
 
   return (
@@ -62,9 +69,15 @@ export default function Register() {
                     <input type="email" className="form-control" id="floatingInputEmail" placeholder="name@example.com" style={{height: '40px', padding: '0.7rem 0.75rem 0'}}/>
                     <label htmlFor="floatingInputEmail" style={{padding: '0.5rem 0.75rem'}}>이메일 주소</label>
                 </div>
-                <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '1rem'}}>
-                    <input type="tel" className="form-control" id="floatingInput" placeholder="010-0000-0000" style={{height: '40px', padding: '0.7rem 0.75rem 0'}}/>
-                    <label htmlFor="floatingInput" style={{padding: '0.5rem 0.75rem'}}>핸드폰 번호</label>
+                <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '5px'}}>
+                    <input type="tel" className="form-control" id="floatingInputPhone" placeholder="010-0000-0000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}}/>
+                    <label htmlFor="floatingInputPhone" style={{padding: '0.5rem 0.75rem'}}>핸드폰 번호</label>
+                    <Button onClick={() => phoneCertifiRequest()}style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}}>요청</Button>
+                </div>
+                <div className="form-floating" ref={phoneCertifiDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '5px', visibility: 'hidden'}}>
+                    <input type="text" className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}}/>
+                    <label htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}}>인증번호</label>
+                    <Button disabled style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}}>인증</Button>
                 </div>
                 <div style={{marginBottom: '1rem'}}>
                     <p style={{fontSize: '0.8rem', color: '#777', maxWidth: '260px', margin: 'auto'}}>

@@ -14,7 +14,9 @@ export default function Login() {
 
   const [showPwd, setShowPwd] = useState(false);
   const [showPwdDiv, setShowPwdDiv] = useState(false);
+  const inputId = useRef();
   const inputPwd = useRef();
+  const loginBtn = useRef();
 
   function toggleShowPwd() {
     setShowPwd(!showPwd);
@@ -29,6 +31,10 @@ export default function Login() {
     }
   }
 
+  function login() {
+    console.log('login');
+  }
+
   return (
     <Container fluid style={h100}>
       <Row style={h100}>
@@ -40,13 +46,25 @@ export default function Login() {
             {/* <br /> */}
             <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '10px'}}>
               {/* <input type="email" className="form-control is-invalid" id="floatingInput" placeholder="name@example.com" /> */}
-              <input type="text" className="form-control" id="floatingInputID" placeholder="전화번호, 사용자 이름 또는 이메일" style={{height: '40px', padding: '0.7rem 0.75rem 0'}}/>
+              <input type="text" className="form-control" id="floatingInputID" placeholder="전화번호, 사용자 이름 또는 이메일" ref={inputId} style={{height: '40px', padding: '0.7rem 0.75rem 0'}} 
+              onKeyDown={(e) => {
+                if(e.key === 'Enter') {
+                  loginBtn.current.focus();
+                  login();
+                }
+              }} />
               <label htmlFor="floatingInputID" style={{padding: '0.5rem 0.75rem', fontSize: '0.8rem'}}>전화번호, 사용자 이름 또는 이메일</label>
             </div>
             {/* <input type='password' placeholder='비밀번호' style={{height: '30px', minWidth: '260px', fontSize: '0.8rem', marginBottom: '10px'}} /> */}
             {/* <br /> */}
             <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '10px'}}>
-              <input type={showPwd ? "password" : "text"} className="form-control" id="floatingInputPW" placeholder="비밀번호" ref={inputPwd} onChange={() => inputPwdChange()} style={{height: '40px', padding: '0.7rem 0.75rem 0'}}/>
+              <input type={showPwd ? "password" : "text"} className="form-control" id="floatingInputPW" placeholder="비밀번호" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} ref={inputPwd} onChange={() => inputPwdChange()} 
+              onKeyDown={(e) => {
+                if(e.key === 'Enter') {
+                  loginBtn.current.focus();
+                  login();
+                }
+              }} />
               <label htmlFor="floatingInputPW" style={{padding: '0.5rem 0.75rem', fontSize: '0.8rem'}}>비밀번호</label>
               <div style={showPwdDiv ? {display: 'inline'} : {display: 'none'}}>
                 <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}}>{showPwd ? "표시" : "숨기기"}</button>
@@ -56,7 +74,7 @@ export default function Login() {
               <input type='checkbox' name='loginCookie' id='lgoinCookie' value='loginCookie' />
               <label htmlFor='lgoinCookie' style={{marginLeft: '5px'}}>로그인 정보 저장하기</label>
             </div>
-            <Button style={{width: '260px'}}>로그인</Button>
+            <Button ref={loginBtn} style={{width: '260px'}}>로그인</Button>
             <br />
             <Row style={{width: '260px', margin: 'auto', marginTop: '15px'}}>
               <Col span={5} style={{border: '1px solid #777', height: '1px', position: 'relative', top: '10px'}}></Col>
