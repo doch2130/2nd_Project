@@ -3,7 +3,6 @@ import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { useEffect } from 'react';
 
 export default function Register() {
   const h100 = {
@@ -14,40 +13,12 @@ export default function Register() {
     textAlign: 'center'
   }
 
-  // const [msgPwd, setMsgPwd] = useState('');
   const [showPwd, setShowPwd] = useState(false);
-  const [showPwdDiv, setShowPwdDiv] = useState(false);
   const inputPwd = useRef();
   const phoneCertifiDiv = useRef();
 
   function toggleShowPwd() {
     setShowPwd(!showPwd);
-  }
-
-  function inputPwdChange() {
-    // console.log(inputPwd);
-    if(inputPwd.current.value === '') {
-      setShowPwdDiv(false);
-    } else {
-      setShowPwdDiv(true);
-    }
-  }
-
-  function inputPwdChangeRegex() {
-    const pwdRegex = /(?=.*[0-9])(?=.*[a-z])(?=.*\W)(?=\S+$).{8,20}/;
-    if(inputPwd.current.value === '') {
-      inputPwd.current.message = '필수 작성 칸 입니다.'
-      console.log('유효성검사 null');
-      return false;
-    } else if (pwdRegex.test(inputPwd.current.value)) {
-      inputPwd.current.message = '8~20 글자의 소문자+숫자+특수문자 조합으로 입력해주세요.'
-      console.log('유효성검사 성공');
-      return {...register('pwd')};
-      // return true;
-    } else {
-      console.log('유효성 검사 실패');
-      return false;
-    }
   }
 
   function phoneCertifiRequest() {
@@ -58,26 +29,11 @@ export default function Register() {
 
   // react hook form 사용
   // isSubmitting => form submit 실행 중이지를 체크, 연속 클릭 방지
-  const {register, handleSubmit, formState: { isSubmitting, errors }} = useForm();
-  // const {register, handleSubmit, formState, reset} =  useForm();
-
+  // getValues => 이벤트 조건 해당 시 값 가져오기 (pwd 기준, 빈 값, 1글자 입력, 정규식 조건 충족)
+  // mode => 기본: submit 실행시에만 발동, onChange 모드로 변경 가능
+  const {getValues, register, handleSubmit, formState: { isSubmitting, errors }} = useForm({mode: 'onChange'});
+  // react hook form submit 함수
   const onSubmit = data => console.log(data);
-
-  // useEffect(() => {
-  //   console.log('1', errors.pwd);
-  // }, [errors.pwd])
-  console.log(errors.pwd);
-
-  // {...register('pwd', {
-  //   required: '필수 작성 칸 입니다.',
-  //   pattern: {
-  //     value: /(?=.*[0-9])(?=.*[a-z])(?=.*\W)(?=\S+$).{8,20}/,
-  //     message: '8~20 글자의 소문자+숫자+특수문자 조합으로 입력해주세요.',
-  //   }
-  // })} 
-  
-
-
 
   return (
     <Container fluid style={h100}>
@@ -109,8 +65,8 @@ export default function Register() {
                     <label htmlFor="floatingInputId" style={{padding: '0.5rem 0.75rem'}} >아이디</label>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
-                  {/* {errors.id && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small>} */}
-                  {errors.id ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>5~10 글자의 소문자, 숫자로 입력해주세요.</small>}
+                  {errors.id && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small>}
+                  {/* {errors.id ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>5~10 글자의 소문자, 숫자로 입력해주세요.</small>} */}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}} >
@@ -120,31 +76,35 @@ export default function Register() {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
                         value: /^[가-힣a-zA-Z]{2,10}$/g,
-                        message: '10글자 이하로 입력하여주세요.',
+                        message: '2~10 글자로 입력해주세요.',
                       }
                     })} />
                     <label htmlFor="floatingInputName" style={{padding: '0.5rem 0.75rem'}}>사용자 이름</label>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
-                  {/* {errors.name && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small>} */}
-                  {errors.name ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>10글자 이하로 입력하여주세요.</small> }
+                  {errors.name && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small>}
+                  {/* {errors.name ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>10글자 이하로 입력하여주세요.</small> } */}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
                     <input type={showPwd ? "text" : "password"} name='pwd' className="form-control" id="floatingInputPassword" placeholder="비밀번호" ref={inputPwd} style={{height: '40px', padding: '0.7rem 0.75rem 0'}} maxLength='20'
-                    onChange={() => {
-                      inputPwdChangeRegex();
-                      inputPwdChange();
-                    }} />
+                    {...register('pwd', {
+                      required: '필수 작성 칸 입니다.',
+                      pattern: {
+                        value: /(?=.*[0-9])(?=.*[a-z])(?=.*\W)(?=\S+$).{8,20}/,
+                        message: '8~20 글자의 소문자+숫자+특수문자 조합으로 입력해주세요.',
+                      }
+                    })} 
+                    />
                     <label htmlFor="floatingInputPassword" style={{padding: '0.5rem 0.75rem'}} >비밀번호</label>
-                    <div style={showPwdDiv ? {display: 'inline'} : {display: 'none'}}>
+                    {/* <div style={showPwdDiv ? {display: 'inline'} : {display: 'none'}}> */}
+                    <div style={getValues('pwd') ? {display: 'inline'} : {display: 'none'}}>
                         <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}} >{showPwd ? "표시" : "숨기기"}</button>
                     </div>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
-                  {/* {errors.pwd && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.pwd.message}</small>} */}
+                  {errors.pwd && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.pwd.message}</small>}
                   {/* {errors.pwd ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.pwd.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>8~20 글자의 소문자+숫자+특수문자 조합으로 입력해주세요.</small>} */}
-                  {errors.pwd ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.pwd.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>8~20 글자의 소문자+숫자+특수문자 조합으로 입력해주세요.</small>}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
@@ -160,8 +120,8 @@ export default function Register() {
                     <label htmlFor="floatingInputEmail" style={{padding: '0.5rem 0.75rem'}} >이메일 주소</label>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
-                  {/* {errors.email && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small>} */}
-                  {errors.email ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>exam@exam.com, 형식에 맞게 입력해주세요.</small> }
+                  {errors.email && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small>}
+                  {/* {errors.email ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>exam@exam.com, 형식에 맞게 입력해주세요.</small> } */}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
