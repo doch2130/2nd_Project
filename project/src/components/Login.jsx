@@ -31,6 +31,13 @@ export default function Login() {
     }
   }
 
+  function enterEvent(e) {
+    if(e.key === 'Enter') {
+      loginBtn.current.focus();
+      login();
+    }
+  }
+
   function login() {
     console.log('login');
   }
@@ -47,27 +54,17 @@ export default function Login() {
             <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '10px'}}>
               {/* <input type="email" className="form-control is-invalid" id="floatingInput" placeholder="name@example.com" /> */}
               <input type="text" className="form-control" id="floatingInputID" placeholder="전화번호, 사용자 이름 또는 이메일" ref={inputId} style={{height: '40px', padding: '0.7rem 0.75rem 0'}} 
-              onKeyDown={(e) => {
-                if(e.key === 'Enter') {
-                  loginBtn.current.focus();
-                  login();
-                }
-              }} />
+              onKeyDown={(e) => enterEvent(e)} maxLength='10' />
               <label htmlFor="floatingInputID" style={{padding: '0.5rem 0.75rem', fontSize: '0.8rem'}}>전화번호, 사용자 이름 또는 이메일</label>
             </div>
             {/* <input type='password' placeholder='비밀번호' style={{height: '30px', minWidth: '260px', fontSize: '0.8rem', marginBottom: '10px'}} /> */}
             {/* <br /> */}
             <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px', marginBottom: '10px'}}>
-              <input type={showPwd ? "password" : "text"} className="form-control" id="floatingInputPW" placeholder="비밀번호" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} ref={inputPwd} onChange={() => inputPwdChange()} 
-              onKeyDown={(e) => {
-                if(e.key === 'Enter') {
-                  loginBtn.current.focus();
-                  login();
-                }
-              }} />
+              <input type={showPwd ? "text" : "password"} className="form-control" id="floatingInputPW" placeholder="비밀번호" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} ref={inputPwd} onChange={() => inputPwdChange()} 
+              onKeyDown={(e) => enterEvent(e)} maxLength='20' />
               <label htmlFor="floatingInputPW" style={{padding: '0.5rem 0.75rem', fontSize: '0.8rem'}}>비밀번호</label>
               <div style={showPwdDiv ? {display: 'inline'} : {display: 'none'}}>
-                <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}}>{showPwd ? "표시" : "숨기기"}</button>
+                <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}}>{showPwd ? "숨기기" : "표시"}</button>
               </div>
             </div>
             <div style={{width: '260px', textAlign: 'left', margin: 'auto', marginBottom: '10px'}}>
