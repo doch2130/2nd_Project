@@ -22,9 +22,9 @@ export default function Register() {
   }
 
   function phoneCertifiRequest() {
-    phoneCertifiDiv.current.style.visibility = 'visible';
-    phoneCertifiDiv.current.children[0].focus();
+    phoneCertifiDiv.current.children[0].disabled = false;
     phoneCertifiDiv.current.children[2].disabled = false;
+    phoneCertifiDiv.current.children[0].focus();
   }
 
   // react hook form 사용
@@ -99,7 +99,7 @@ export default function Register() {
                     <label htmlFor="floatingInputPassword" style={{padding: '0.5rem 0.75rem'}} >비밀번호</label>
                     {/* <div style={showPwdDiv ? {display: 'inline'} : {display: 'none'}}> */}
                     <div style={getValues('pwd') ? {display: 'inline'} : {display: 'none'}}>
-                        <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}} >{showPwd ? "표시" : "숨기기"}</button>
+                        <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}} >{showPwd ? "숨기기" : "표시"}</button>
                     </div>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
@@ -141,8 +141,8 @@ export default function Register() {
                   {/* {errors.phone ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.phone.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>000-0000-0000, 형식에 맞게 입력해주세요.</small>} */}
                 </div>
 
-                <div className="form-floating" ref={phoneCertifiDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px', visibility: 'hidden'}}>
-                    <input type="text" name='phoneCertifi' className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='10' />
+                <div className="form-floating" ref={phoneCertifiDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
+                    <input disabled type="text" name='phoneCertifi' className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='10' />
                     <label htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}} >인증번호</label>
                     <Button disabled style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}}>인증</Button>
                 </div>
