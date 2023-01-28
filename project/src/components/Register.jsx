@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import { useEffect } from 'react';
 
 export default function Register() {
   const h100 = {
@@ -17,15 +18,98 @@ export default function Register() {
   const inputPwd = useRef();
   const phoneCertifiDiv = useRef();
 
+  const [count, setCount] = useState(300);
+  const [isStart, setIsStart] = useState(false);
+  const [repeat, setRepeat] = useState();
+  const [isReStart, setIsReStart] = useState(false);
+
+  const certifiResult = useRef();
+  const [iscertifiResult, setIscertifiResult] = useState(false);
+
+  // count 1번, count 2번 toggle 실행 함수
+  const toggleStart = () => {
+    // console.log( "toggleStart : ", isStart );
+    if ( isStart ) {
+      setIsStart( false );
+      setIsReStart( true );
+    } else {
+      setIsStart( true );
+      setIsReStart( false );
+    }
+  }
+
+  // count 함수 1번 - 2번 이랑 번갈아 실행
+  useEffect(() => {
+    if ( isStart ) {
+      const countInterval = setInterval(() => {
+        setCount(count => count - 1);
+      }, 1000);
+      setRepeat(countInterval);
+    } else {
+      clearInterval(repeat);
+      setCount(300);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isStart]);
+
+  // count 함수 2번 - 1번 이랑 번갈아 실행
+  useEffect(() => {
+    if(isReStart) {
+      const countInterval = setInterval(() => {
+        setCount(count => count - 1);
+      }, 1000);
+      setRepeat(countInterval);
+    } else {
+      clearInterval(repeat);
+      setCount(300);
+    }
+  }, [isReStart]);
+
+  // 카운트 0초 되면 인터벌 초기화
+  useEffect(() => {
+    if (count <= 0) {
+      clearInterval(repeat);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count]);
+
+
+  // 비밀번호 표시, 숨기기
   function toggleShowPwd() {
     setShowPwd(!showPwd);
   }
 
+  // 인증번호 요청 함수
   function phoneCertifiRequest() {
-    phoneCertifiDiv.current.children[0].disabled = false;
-    phoneCertifiDiv.current.children[2].disabled = false;
-    phoneCertifiDiv.current.children[0].focus();
+    const chooseMsg = window.confirm('해당 번호로 발송하시겠습니까?');
+    if(chooseMsg) {
+      phoneCertifiDiv.current.children[0].disabled = false;
+      phoneCertifiDiv.current.children[2].disabled = false;
+      phoneCertifiDiv.current.children[0].value = '';
+      phoneCertifiDiv.current.children[0].focus();
+      toggleStart();
+    }
   }
+
+
+  // 인증번호 일치 확인 함수
+  function phoneCertifiResult() {
+    // 테스트용
+    const test = '123456';
+    // string
+    console.log(typeof(certifiResult.current.value));
+
+    if(test === certifiResult.current.value) {
+      alert('굿');
+      // 성공하면 인터벌 초기화 및 false
+      setIsStart( false );
+      setIsReStart( false );
+      setIscertifiResult(true);
+    } else {
+      alert('인증번호가 일치하지 않습니다.');
+    }
+  }
+
 
   // react hook form 사용
   // isSubmitting => form submit 실행 중이지를 체크, 연속 클릭 방지
@@ -142,13 +226,18 @@ export default function Register() {
                 </div>
 
                 <div className="form-floating" ref={phoneCertifiDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
-                    <input disabled type="text" name='phoneCertifi' className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='10' />
+                    <input ref={certifiResult} disabled={!isStart && !isReStart} type="text" name='phoneCertifi' className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='10' />
                     <label htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}} >인증번호</label>
-                    <Button disabled style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}}>인증</Button>
+                    {/* disalbed 를 ||로 하면 onclick 이벤트가 실행이 안되고, &&로 하면 실행이 된다.
+                    그리고 &&로 해도 || 랑 동일한 결과가 나온다. 왜인지 이해가 안간다....*/}
+                    <Button disabled={!isStart && !isReStart} onClick={() => phoneCertifiResult()} style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}} >인증</Button>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
-                  {/* 인증 완료 문구 넣을 예정 */}
-                  {/* {errors.phone && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.phone.message}</small>} */}
+                  {/* 인증번호 시간 표시 - 함수 2개 번갈아가면서 실행 */}
+                  {isStart && <small style={{fontSize: '0.75rem', fontWeight: '700'}} >{count}초 이내에 입력해주세요.</small>}
+                  {isReStart && <small style={{fontSize: '0.75rem', fontWeight: '700'}} >{count}초 이내에 입력해주세요.</small>}
+                  {/* 인증번호 실패 및 성공 문구 */}
+                  {iscertifiResult && <small style={{fontSize: '0.75rem', fontWeight: '700'}} >인증번호가 일치합니다.</small>}
                 </div>
 
                 <div style={{marginBottom: '1rem'}}>
