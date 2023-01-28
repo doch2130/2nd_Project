@@ -1,9 +1,10 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function Register() {
   const h100 = {
@@ -14,8 +15,11 @@ export default function Register() {
     textAlign: 'center'
   }
 
+  const navigate = useNavigate();
+
   const [showPwd, setShowPwd] = useState(false);
   const inputPwd = useRef();
+  const phoneDiv = useRef();
   const phoneCertifiDiv = useRef();
 
   const [count, setCount] = useState(300);
@@ -63,6 +67,7 @@ export default function Register() {
       clearInterval(repeat);
       setCount(300);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReStart]);
 
   // 카운트 0초 되면 인터벌 초기화
@@ -81,6 +86,10 @@ export default function Register() {
 
   // 인증번호 요청 함수
   function phoneCertifiRequest() {
+    // console.log(getValues('phone'));
+
+    // 핸드폰 번호 중복검사는 여기서 진행
+
     const chooseMsg = window.confirm('해당 번호로 발송하시겠습니까?');
     if(chooseMsg) {
       phoneCertifiDiv.current.children[0].disabled = false;
@@ -97,18 +106,21 @@ export default function Register() {
     // 테스트용
     const test = '123456';
     // string
-    console.log(typeof(certifiResult.current.value));
-
+    // console.log(typeof(certifiResult.current.value));
     if(test === certifiResult.current.value) {
-      alert('굿');
+      alert('인증번호가 일치합니다.');
       // 성공하면 인터벌 초기화 및 false
       setIsStart( false );
       setIsReStart( false );
       setIscertifiResult(true);
+      // 성공하면 phone 번호 변경 불가능하게 disabled 설정
+      phoneDiv.current.children[0].disabled = true;
+      phoneDiv.current.children[2].disabled = true;
     } else {
       alert('인증번호가 일치하지 않습니다.');
     }
   }
+
 
 
   // react hook form 사용
@@ -116,8 +128,39 @@ export default function Register() {
   // getValues => 이벤트 조건 해당 시 값 가져오기 (pwd 기준, 빈 값, 1글자 입력, 정규식 조건 충족)
   // mode => 기본: submit 실행시에만 발동, onChange 모드로 변경 가능
   const {getValues, register, handleSubmit, formState: { isSubmitting, errors }} = useForm({mode: 'onChange'});
+  
   // react hook form submit 함수
-  const onSubmit = data => console.log(data);
+  // 회원가입 양식 제출
+  const onSubmit = async (data) => {
+    console.log(iscertifiResult);
+    console.log(data);
+    console.log(data.id);
+
+    if(iscertifiResult) {
+      const response = await axios.post('http://localhost:4000/register/complete', {
+        id: data.id,
+        name: data.name,
+        pwd: data.pwd,
+        phone: data.phone,
+        email: data.email,
+      });
+
+      // console.log(response);
+
+      if(response.data === 'id_duplicate') {
+        alert('중복된 아이디입니다.');
+      } else if (response.data === 'email_duplicate') {
+        alert('중복된 이메일입니다.')
+      } else if (response.data === true) {
+        alert('회원가입에 성공하였습니다.');
+        navigate('/login');
+      } else {
+        alert('실패');
+      }
+    } else {
+      alert('핸드폰 인증을 완료해주세요.');
+    }
+  }
 
   return (
     <Container fluid style={h100}>
@@ -208,7 +251,7 @@ export default function Register() {
                   {/* {errors.email ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>exam@exam.com, 형식에 맞게 입력해주세요.</small> } */}
                 </div>
 
-                <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
+                <div className="form-floating" ref={phoneDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
                     <input type="tel" name='phone' className="form-control" id="floatingInputPhone" placeholder="010-0000-0000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='15'
                     {...register('phone', {
                       required: '필수 작성 칸 입니다.',

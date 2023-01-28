@@ -8,15 +8,15 @@ import NotFound from './components/NotFound';
 function App() {
   return (
     <>
-    {/* <div>
-      <span>테스트</span>
-    </div> */}
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+      {/* <div>
+        <span>테스트</span>
+      </div> */}
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 }

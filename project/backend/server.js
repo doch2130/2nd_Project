@@ -10,7 +10,6 @@ dotenv.config({
   path: './config/.env',
 });
 
-
 //* Redis 연결
 // redis[s]://[[username][:password]@][host][:port][/db-number]
 const redisClient = redis.createClient({
@@ -29,8 +28,7 @@ redisClient.on('error', (err) => {
 redisClient.connect().then(); // redis v4 연결 (비동기)
 const redisCli = redisClient.v4; // 기본 redisClient 객체는 콜백기반인데 v4버젼은 프로미스 기반이라 사용
 
-
-app.set('view engine', 'ejs');
+// app.set('view engine', 'ejs');
 // app.use('/static', express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -51,10 +49,6 @@ app.use(
 const router = require('./routes');
 
 app.use('/', router);
-
-app.get('/', (req, res) => {
-  res.send('data');
-});
 
 app.get('*', (req, res) => {
   res.send('주소가 존재하지 않습니다. 다시 한 번 확인해주세요.');
