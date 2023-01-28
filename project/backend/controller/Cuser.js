@@ -1,5 +1,39 @@
 const { User } = require('../model/index');
 const { Op } = require('sequelize');
+const { redisClient } = require('../redis/redis');
+const { sendVerificationSMS } = require('../controller/naverSensUtill');
+
+// v4 버전부터 Promise 기능이 기본이라고 설명서에는 나와있지만
+// 현재 Node Project에서는 기능이 Promise 기능이 안된다.
+const redisCli = redisClient.v4;
+
+// 문자인증 요청
+exports.registerCertification = async (req, res) => {
+  // console.log('req.body.phone', req.body.phone);
+
+  const resultPhone = await User.findOne({
+    where: { phone: req.body.phone },
+  });
+
+  if(resultPhone) {
+    res.send('already_join_phone');
+  } else {
+    const vertificationCode = await sendVerificationSMS(req.body.phone);
+    redisCli.set(req.body.phone, vertificationCode);
+    redisCli.expire(req.body.phone, 300);
+
+    res.send(true);
+  }
+};
+
+// 문자인증 검증
+exports.registerCertificationCheck = async (req, res) => {
+  redisCli.get(req.body.phone, (err, result) => {
+    if(err) throw err;
+
+    res.send(result);
+  });
+};
 
 // 회원가입 기능
 exports.register = async (req, res) => {
@@ -15,6 +49,7 @@ exports.register = async (req, res) => {
     privacy: '1',
   };
 
+  // OR로 하면 어느것이 중복인지 확인이 불가능해서 따로 find를 실행한다.
   const resultID = await User.findOne({
     where: { id: req.body.id },
   });

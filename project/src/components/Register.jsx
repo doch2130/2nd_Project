@@ -85,29 +85,42 @@ export default function Register() {
   }
 
   // 인증번호 요청 함수
-  function phoneCertifiRequest() {
+  async function phoneCertifiRequest() {
     // console.log(getValues('phone'));
+    const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
 
-    // 핸드폰 번호 중복검사는 여기서 진행
+    if(phoneRegex.test(getValues('phone'))) {
+      const chooseMsg = window.confirm('해당 번호로 발송하시겠습니까?');
 
-    const chooseMsg = window.confirm('해당 번호로 발송하시겠습니까?');
-    if(chooseMsg) {
-      phoneCertifiDiv.current.children[0].disabled = false;
-      phoneCertifiDiv.current.children[2].disabled = false;
-      phoneCertifiDiv.current.children[0].value = '';
-      phoneCertifiDiv.current.children[0].focus();
-      toggleStart();
+      if(chooseMsg) {
+        const response = await axios.post('http://localhost:4000/register/certification', {
+          phone: getValues('phone')
+        });
+
+        if(response.data === 'already_join_phone') {
+          alert('이미 가입한 핸드폰 번호입니다.');
+        } else {
+          phoneCertifiDiv.current.children[0].disabled = false;
+          phoneCertifiDiv.current.children[2].disabled = false;
+          phoneCertifiDiv.current.children[0].value = '';
+          phoneCertifiDiv.current.children[0].focus();
+          toggleStart();
+        }
+      }
+
+    } else {
+      alert('핸드폰 번호 양식에 맞게 입력해주세요.');
     }
   }
 
 
   // 인증번호 일치 확인 함수
-  function phoneCertifiResult() {
-    // 테스트용
-    const test = '123456';
-    // string
-    // console.log(typeof(certifiResult.current.value));
-    if(test === certifiResult.current.value) {
+  async function phoneCertifiResult() {
+    const response = await axios.post('http://localhost:4000/register/certification/Check', {
+      phone: getValues('phone')
+    });
+
+    if(String(response.data) === certifiResult.current.value) {
       alert('인증번호가 일치합니다.');
       // 성공하면 인터벌 초기화 및 false
       setIsStart( false );
@@ -116,6 +129,8 @@ export default function Register() {
       // 성공하면 phone 번호 변경 불가능하게 disabled 설정
       phoneDiv.current.children[0].disabled = true;
       phoneDiv.current.children[2].disabled = true;
+    } else if (count <= 0) {
+      alert('인증번호가 만료되었습니다. 다시 요청해주세요.');
     } else {
       alert('인증번호가 일치하지 않습니다.');
     }
@@ -132,10 +147,6 @@ export default function Register() {
   // react hook form submit 함수
   // 회원가입 양식 제출
   const onSubmit = async (data) => {
-    console.log(iscertifiResult);
-    console.log(data);
-    console.log(data.id);
-
     if(iscertifiResult) {
       const response = await axios.post('http://localhost:4000/register/complete', {
         id: data.id,
@@ -195,7 +206,6 @@ export default function Register() {
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.id && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small>}
-                  {/* {errors.id ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>5~10 글자의 소문자, 숫자로 입력해주세요.</small>} */}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}} >
@@ -212,7 +222,6 @@ export default function Register() {
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.name && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small>}
-                  {/* {errors.name ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>10글자 이하로 입력하여주세요.</small> } */}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
@@ -233,7 +242,6 @@ export default function Register() {
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.pwd && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.pwd.message}</small>}
-                  {/* {errors.pwd ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.pwd.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>8~20 글자의 소문자+숫자+특수문자 조합으로 입력해주세요.</small>} */}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
@@ -250,7 +258,6 @@ export default function Register() {
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.email && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small>}
-                  {/* {errors.email ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>exam@exam.com, 형식에 맞게 입력해주세요.</small> } */}
                 </div>
 
                 <div className="form-floating" ref={phoneDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
@@ -267,7 +274,6 @@ export default function Register() {
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.phone && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.phone.message}</small>}
-                  {/* {errors.phone ? <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.phone.message}</small> : <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>000-0000-0000, 형식에 맞게 입력해주세요.</small>} */}
                 </div>
 
                 <div className="form-floating" ref={phoneCertifiDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>

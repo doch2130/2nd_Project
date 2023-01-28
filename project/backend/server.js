@@ -2,9 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
-const redis = require('redis');
-
-const app = express();
+// const redis = require('redis');
+const { redisClient } = require('./redis/redis');
 
 dotenv.config({
   path: './config/.env',
@@ -12,10 +11,11 @@ dotenv.config({
 
 //* Redis 연결
 // redis[s]://[[username][:password]@][host][:port][/db-number]
-const redisClient = redis.createClient({
-  url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/0`,
-  legacyMode: true, // 반드시 설정 !! 설정 안하면 connect-redis 동작 안함
-});
+// const redisClient = redis.createClient({
+//   url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/0`,
+// // 반드시 설정 !! 설정 안하면 connect-redis 동작 안함
+//   legacyMode: true,
+// });
 
 redisClient.on('connect', () => {
   console.info('Redis connected!');
@@ -24,9 +24,19 @@ redisClient.on('connect', () => {
 redisClient.on('error', (err) => {
   console.error('Redis Client Error', err);
 });
+// console.log(redisClient);
+// redis v4 연결 (비동기)
+redisClient.connect();
+// .then(async () => {
+//   console.log('Redis Connected!');
+//   await redisCli.set('phh', '147258');
+//   const test = await redisCli.get('phh');
+//   console.log(test);
+// });
+// 기본 redisClient 객체는 콜백기반인데 v4버젼은 프로미스 기반이라 사용
+const redisCli = redisClient.v4;
 
-redisClient.connect().then(); // redis v4 연결 (비동기)
-const redisCli = redisClient.v4; // 기본 redisClient 객체는 콜백기반인데 v4버젼은 프로미스 기반이라 사용
+const app = express();
 
 // app.set('view engine', 'ejs');
 // app.use('/static', express.static(__dirname + '/public'));

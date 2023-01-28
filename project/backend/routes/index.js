@@ -2,7 +2,7 @@ const express = require('express');
 const controllerUser = require('../controller/Cuser');
 
 const router = express.Router();
-// const { isAuth } = require('../middlewares');
+
 const { sendVerificationSMS } = require('../controller/naverSensUtill');
 
 // 나중에 post로 변경하면 됨
@@ -15,5 +15,10 @@ router.post('/login', controllerUser.login);
 
 // 회원가입
 router.post('/register/complete', controllerUser.register);
+
+// 회원가입 문자 인증
+router.post('/register/certification', controllerUser.registerCertification);
+
+router.post('/register/certification/Check', controllerUser.registerCertificationCheck);
 
 module.exports = router;
