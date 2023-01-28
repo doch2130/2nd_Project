@@ -15,30 +15,31 @@ exports.register = async (req, res) => {
     privacy: '1',
   };
 
-  let result = await User.findOne({
+  const resultID = await User.findOne({
     where: { id: req.body.id },
   });
-  // console.log(result);
 
-  if (result) {
-    // 아이디 중복
+  const resultPhone = await User.findOne({
+    where: { phone: req.body.phone },
+  });
+
+  const resultEmail = await User.findOne({
+    where: { email: req.body.email },
+  });
+
+  if (resultID) {
     res.send('id_duplicate');
+  } else if (resultPhone) {
+    res.send('phone_duplicate');
+  } else if (resultEmail) {
+    res.send('email_duplicate');
   } else {
-    result = await User.findOne({
-      where: { email: req.body.email },
-    });
-
+    const result = await User.create(data);
+    // console.log(result);
     if (result) {
-      // 이메일 중복
-      res.send('email_duplicate');
+      res.send(true);
     } else {
-      result = await User.create(data);
-      // console.log(result);
-      if (result) {
-        res.send(true);
-      } else {
-        res.send(false);
-      }
+      res.send(false);
     }
   }
 };

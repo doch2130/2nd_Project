@@ -149,8 +149,10 @@ export default function Register() {
 
       if(response.data === 'id_duplicate') {
         alert('중복된 아이디입니다.');
+      } else if (response.data === 'phone_duplicate') {
+        alert('중복된 전화번호입니다.');
       } else if (response.data === 'email_duplicate') {
-        alert('중복된 이메일입니다.')
+        alert('중복된 이메일입니다.');
       } else if (response.data === true) {
         alert('회원가입에 성공하였습니다.');
         navigate('/login');
