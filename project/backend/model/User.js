@@ -12,7 +12,7 @@ const User = (Sequelize, DataTypes) => {
         allowNull: false,
       },
       pwd: {
-        type: DataTypes.STRING(64),
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       phone: {
@@ -31,6 +31,10 @@ const User = (Sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaulteValue: '0',
+      },
+      pwsalt: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
       },
     },
     {

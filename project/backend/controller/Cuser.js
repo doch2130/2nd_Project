@@ -2,6 +2,7 @@ const { User } = require('../model/index');
 const { Op } = require('sequelize');
 const { redisClient } = require('../redis/redis');
 const { sendVerificationSMS } = require('../controller/naverSensUtill');
+const hash = require('./hash');
 
 // v4 버전부터 Promise 기능이 기본이라고 설명서에는 나와있지만
 // 현재 Node Project에서는 기능이 Promise 기능이 안된다.
@@ -39,16 +40,6 @@ exports.registerCertificationCheck = async (req, res) => {
 exports.register = async (req, res) => {
   // console.log(req.body);
 
-  const data = {
-    id: req.body.id,
-    name: req.body.name,
-    pwd: req.body.pwd,
-    phone: req.body.phone,
-    phonecertifi: '1',
-    email: req.body.email,
-    privacy: '1',
-  };
-
   // OR로 하면 어느것이 중복인지 확인이 불가능해서 따로 find를 실행한다.
   const resultID = await User.findOne({
     where: { id: req.body.id },
@@ -69,6 +60,21 @@ exports.register = async (req, res) => {
   } else if (resultEmail) {
     res.send('email_duplicate');
   } else {
+
+    // crypto로 비밀번호 암호화
+    const { password, salt } = await hash.createHashedPassword(req.body.pwd);
+  
+    const data = {
+      id: req.body.id,
+      name: req.body.name,
+      pwd: password,
+      phone: req.body.phone,
+      phonecertifi: '1',
+      email: req.body.email,
+      privacy: '1',
+      pwsalt: salt,
+    };
+
     const result = await User.create(data);
     // console.log(result);
     if (result) {
@@ -81,25 +87,33 @@ exports.register = async (req, res) => {
 
 // 로그인 기능
 exports.login = async (req, res) => {
-  let result = await User.findOne({
-    where: {
-      [Op.and]: [
-        { pwd: req.body.pwd },
-        {
-          [Op.or]: [
-            { id: req.body.id },
-            { phone: req.body.id },
-            { email: req.body.id },
-          ],
-        },
-      ],
-    },
-  });
-  // console.log(result);
+  const password = await hash.makePasswordHashed(req.body.id, req.body.pwd)
 
-  if (result) {
-    res.send(true);
-  } else {
+  if(password === 'notFound') {
     res.send(false);
+  } else {
+    let result = await User.findOne({
+      where: {
+        [Op.and]: [
+          { pwd: password },
+          {
+            [Op.or]: [
+              { id: req.body.id },
+              { phone: req.body.id },
+              { email: req.body.id },
+            ],
+          },
+        ],
+      },
+    });
+    // console.log(result);
+  
+    if (result) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
   }
+
+  
 };

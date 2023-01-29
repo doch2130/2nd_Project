@@ -38,7 +38,14 @@ export default function Login() {
   }
 
   async function login() {
-    // console.log('login');
+    console.log(inputId.current.value);
+    if(inputId.current.value.trim() === '') {
+      inputId.current.focus();
+      return alert('아이디를 입력해주세요.');
+    } else if(inputPwd.current.value.trim() === '') {
+      inputPwd.current.focus();
+      return alert('패스워드를 입력해주세요.');
+    }
 
     const response = await axios.post('http://localhost:4000/login', {
       id: inputId.current.value,
