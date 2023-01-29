@@ -6,6 +6,8 @@ const hash = require('./hash');
 
 // v4 버전부터 Promise 기능이 기본이라고 설명서에는 나와있지만
 // 현재 Node Project에서는 기능이 Promise 기능이 안된다.
+
+// ps. redisCli.v4.set 방식으로 사용해야 v4 버전에 해당한다.
 const redisCli = redisClient.v4;
 
 // 문자인증 요청
@@ -109,6 +111,8 @@ exports.login = async (req, res) => {
     // console.log(result);
   
     if (result) {
+      console.log(req.session);
+      console.log('req.session.id', req.session.id);
       res.send(true);
     } else {
       res.send(false);

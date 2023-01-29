@@ -3,6 +3,10 @@ import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+
+// 테스트
+import { create, done } from '../store/modules/loginStatus';
 
 export default function Login() {
   const h100 = {
@@ -12,6 +16,10 @@ export default function Login() {
     margin: 'auto',
     textAlign: 'center'
   }
+
+  // test
+  const nextID = useSelector((state) => state.loginStatus.nextID);
+  const dispatch = useDispatch();
 
   const [showPwd, setShowPwd] = useState(false);
   const [showPwdDiv, setShowPwdDiv] = useState(false);
@@ -47,13 +55,12 @@ export default function Login() {
       return alert('패스워드를 입력해주세요.');
     }
 
+    // withCredentials: true
     const response = await axios.post('http://localhost:4000/login', {
       id: inputId.current.value,
       pwd: inputPwd.current.value,
     });
 
-    // console.log('test', response);
-    // 로그인 이후 추가 작업 하면 됨
     if(response.data) {
       alert('성공');
     } else {
@@ -68,6 +75,10 @@ export default function Login() {
     <Container fluid style={h100}>
       <Row style={h100}>
         <Col style={mid}>
+          <button onClick={() => {
+            dispatch(create({id: nextID, text: inputId.current.value}));
+            inputId.current.value = '';
+          }}>test</button>
           <form className='form-floating' style={{maxWidth: '450px', margin: 'auto', border: '1px solid black'}}>
             <img src='/images/logo_text.png' alt='logo_text_img' style={{marginBottom: '30px', width: '100%', maxWidth: '360px'}}/>
             <br />

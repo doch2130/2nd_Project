@@ -4,6 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import NotFound from './components/NotFound';
+// import axios from 'axios';
+
+// axios.defaults.withCredentials = true;
 
 function App() {
   return (

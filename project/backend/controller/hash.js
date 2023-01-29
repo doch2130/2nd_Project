@@ -42,12 +42,12 @@ exports.makePasswordHashed = (userId, plainPassword) => {
 
         if(salt) {
             // console.log('salt', salt);
-            const pwsalt = salt.pwsalt;
+            const pwSalt = salt.pwsalt;
             // console.log(saltTest);
             // console.log(plainPassword);
             
             // 위에서 가져온 salt와 plainPassword를 다시 해시 암호화 시킴. (비교하기 위해)
-            crypto.pbkdf2(plainPassword, pwsalt, 9304, 64, 'sha512', (err, key) => {
+            crypto.pbkdf2(plainPassword, pwSalt, 9304, 64, 'sha512', (err, key) => {
                 if (err) reject(err);
 
                 resolve(key.toString('base64'));

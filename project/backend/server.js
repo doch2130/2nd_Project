@@ -2,8 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
-// const redis = require('redis');
 const { redisClient } = require('./redis/redis');
+// const redis = require('redis');
+// const RedisStore = require('connect-redis')(session);
+// const cookieParser = require('cookie-parser');
 
 dotenv.config({
   path: './config/.env',
@@ -40,9 +42,12 @@ const app = express();
 
 // app.set('view engine', 'ejs');
 // app.use('/static', express.static(__dirname + '/public'));
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
 
 app.use(
   session({
@@ -55,6 +60,24 @@ app.use(
     // eslint-disable-next-line comma-dangle
   })
 );
+
+// redis 세션 시도
+// node 연결 시 자동으로 생성되는 sessionID를 redis에 저장하기 때문에 현재 상황에서는 필요하지가 않다.
+// 세션 쿠키 미들웨어 
+// app.use(cookieParser(process.env.COOKIE_SECRET)); 
+// const sessionOption = {
+//    resave: false, 
+//    saveUninitialized: true, 
+//    secret: process.env.COOKIE_SECRET,
+//    cookie: {
+//       httpOnly: true,
+//       secure: false,
+//    },
+//    // 세션 데이터를 로컬 서버 메모리가 아닌 redis db에 저장하도록 등록
+//    store: new RedisStore({ client: redisClient, prefix: 'session:' }),
+// }; 
+// app.use(session(sessionOption));
+
 
 const router = require('./routes');
 
