@@ -1,9 +1,8 @@
-const { User } = require('../model/index');
+const { User, JWToken } = require('../model/index');
 const { Op } = require('sequelize');
 const { redisClient } = require('../redis/redis');
 const { sendVerificationSMS } = require('../controller/naverSensUtill');
 const hash = require('./hash');
-// const jwt = require('jsonwebtoken');
 const jwt = require('./jwt');
 
 const cookieOption = {
@@ -119,22 +118,41 @@ exports.login = async (req, res) => {
     // console.log(result);
 
     if (result) {
-      // console.log(req.session);
-      // console.log('req.session.id', req.session.id);
+      // 로그인 성공 시 JWT Token 생성
       const jwtToken = await jwt.sign(result);
+      const jwtid = await hash.createRefreshToken(result.id);
 
-      res.cookie('token', jwtToken, cookieOption);
-      res.cookie('count', 1, cookieOption);
+      // console.log('jwtid', jwtid);
+      // console.log('refresh', jwtToken);
+
+      // jwtid, refreshToken DB에 저장
+      await JWToken.create({
+        jwtid: jwtid,
+        refresh: jwtToken.refreshToken
+      });
+
+      // 임시 Refresh Token은 쿠키로 전달
+      res.cookie('jsid', jwtid, cookieOption);
+      // Access Token은 데이터로 전달 후 클라이언트에서 Header['Authorization']에 적용 처리
+      // 이후 클라이언트에서 요청 시 Header에 Access Token을 같이 보내주게 된다.
       res.send({
         msg: true,
+        id: result.id,
         accessToken: jwtToken.accessToken,
-        refreshToken: jwtToken.refreshToken,
       });
     } else {
       res.send(false);
     }
   }
 };
+
+
+exports.test = async (req, res) => {
+  console.log('헤더', req.get('Authorization'));
+  console.log('헤더쿠키', req.get('Cookie'));
+  res.send(true);
+}
+
 
 // // 로그인 기능
 // exports.login = async (req, res) => {

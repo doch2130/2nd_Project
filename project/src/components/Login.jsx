@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 테스트
-import { create, done } from '../store/modules/loginStatus';
+import { success } from '../store/modules/loginStatus';
 
 export default function Login() {
   const h100 = {
@@ -17,8 +17,7 @@ export default function Login() {
     textAlign: 'center'
   }
 
-  // 테스트
-  const nextID = useSelector((state) => state.loginStatus.nextID);
+  // const isLogin = useSelector((state) => state.loginStatus.isLogin);
   const dispatch = useDispatch();
 
   const [showPwd, setShowPwd] = useState(false);
@@ -55,24 +54,21 @@ export default function Login() {
       return alert('패스워드를 입력해주세요.');
     }
 
-    // withCredentials: true
     const response = await axios.post('/login', {
       id: inputId.current.value,
       pwd: inputPwd.current.value,
     });
 
     if(response.data.msg === true) {
-      alert('성공');
+      alert('로그인 성공');
       const { accessToken } = response.data;
-
-      // 로그인 성공 이후
       // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
 		  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      // 로그인 정보 reducer로 전달
+      dispatch(success({id: response.data.id}));
 
-      console.log(response);
-      console.log(accessToken);
-      dispatch(create({id: nextID, text: inputId.current.value}));
-
+      // console.log(response);
+      // console.log(accessToken);
     } else {
       inputId.current.value = '';
       inputPwd.current.value = '';
@@ -85,12 +81,6 @@ export default function Login() {
     <Container fluid style={h100}>
       <Row style={h100}>
         <Col style={mid}>
-          {/* 테스트 */}
-          <button onClick={() => {
-            dispatch(create({id: nextID, text: inputId.current.value}));
-            inputId.current.value = '';
-          }}>test</button>
-
           <form className='form-floating' style={{maxWidth: '450px', margin: 'auto', border: '1px solid black'}}>
             <img src='/images/logo_text.png' alt='logo_text_img' style={{marginBottom: '30px', width: '100%', maxWidth: '360px'}}/>
             <br />

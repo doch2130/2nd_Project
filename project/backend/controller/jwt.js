@@ -47,7 +47,7 @@ module.exports = {
           // 해싱 알고리즘
           algorithm: process.env.JWT_ALGORITHM,
         }
-      ),
+      )
     };
     return result;
   },

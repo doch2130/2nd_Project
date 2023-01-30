@@ -21,4 +21,6 @@ router.post('/register/certification', controllerUser.registerCertification);
 
 router.post('/register/certification/Check', controllerUser.registerCertificationCheck);
 
+router.post('/test', controllerUser.test);
+
 module.exports = router;
