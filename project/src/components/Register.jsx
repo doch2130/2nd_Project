@@ -93,7 +93,7 @@ export default function Register() {
       const chooseMsg = window.confirm('해당 번호로 발송하시겠습니까?');
 
       if(chooseMsg) {
-        const response = await axios.post('http://localhost:4000/register/certification', {
+        const response = await axios.post('/register/certification', {
           phone: getValues('phone')
         });
 
@@ -116,7 +116,7 @@ export default function Register() {
 
   // 인증번호 일치 확인 함수
   async function phoneCertifiResult() {
-    const response = await axios.post('http://localhost:4000/register/certification/Check', {
+    const response = await axios.post('/register/certification/Check', {
       phone: getValues('phone')
     });
 

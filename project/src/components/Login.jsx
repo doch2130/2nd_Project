@@ -17,7 +17,7 @@ export default function Login() {
     textAlign: 'center'
   }
 
-  // test
+  // 테스트
   const nextID = useSelector((state) => state.loginStatus.nextID);
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ export default function Login() {
   }
 
   async function login() {
-    console.log(inputId.current.value);
+    // console.log(inputId.current.value);
     if(inputId.current.value.trim() === '') {
       inputId.current.focus();
       return alert('아이디를 입력해주세요.');
@@ -56,13 +56,23 @@ export default function Login() {
     }
 
     // withCredentials: true
-    const response = await axios.post('http://localhost:4000/login', {
+    const response = await axios.post('/login', {
       id: inputId.current.value,
       pwd: inputPwd.current.value,
     });
 
-    if(response.data) {
+    if(response.data.msg === true) {
       alert('성공');
+      const { accessToken } = response.data;
+
+      // 로그인 성공 이후
+      // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+		  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+      console.log(response);
+      console.log(accessToken);
+      dispatch(create({id: nextID, text: inputId.current.value}));
+
     } else {
       inputId.current.value = '';
       inputPwd.current.value = '';
@@ -75,10 +85,12 @@ export default function Login() {
     <Container fluid style={h100}>
       <Row style={h100}>
         <Col style={mid}>
+          {/* 테스트 */}
           <button onClick={() => {
             dispatch(create({id: nextID, text: inputId.current.value}));
             inputId.current.value = '';
           }}>test</button>
+
           <form className='form-floating' style={{maxWidth: '450px', margin: 'auto', border: '1px solid black'}}>
             <img src='/images/logo_text.png' alt='logo_text_img' style={{marginBottom: '30px', width: '100%', maxWidth: '360px'}}/>
             <br />

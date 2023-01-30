@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 const { redisClient } = require('./redis/redis');
 // const redis = require('redis');
 // const RedisStore = require('connect-redis')(session);
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
+// const jwt = require('jsonwebtoken');
 
 dotenv.config({
   path: './config/.env',
@@ -42,32 +43,43 @@ const app = express();
 
 // app.set('view engine', 'ejs');
 // app.use('/static', express.static(__dirname + '/public'));
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(
-  session({
-    // 임의의 문자열을 가지고 세션을 암호화를 하겠다.
-    secret: '1234',
-    // true 일 경우 모든 요청마다 세션에 변화가 없어도 세션을 다시 저장한다. / 대부분 false로 사용한다.
-    resave: false,
-    // 초기화되지 않은 세션을 저장할지 선택한다. / 대부분 true로 사용한다.
-    saveUninitialized: true,
-    // eslint-disable-next-line comma-dangle
-  })
-);
+// app.use(
+//   session({
+//     secret: '1234',
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
+
+app.use(cookieParser(process.env.COOKIE_SECRET));
+
+const sessionOption = {
+  resave: false,
+  saveUninitialized: true,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  },
+};
+app.use(session(sessionOption));
 
 // redis 세션 시도
 // node 연결 시 자동으로 생성되는 sessionID를 redis에 저장하기 때문에 현재 상황에서는 필요하지가 않다.
-// 세션 쿠키 미들웨어 
-// app.use(cookieParser(process.env.COOKIE_SECRET)); 
+// 세션 쿠키 미들웨어
+// app.use(cookieParser(process.env.COOKIE_SECRET));
 // const sessionOption = {
-//    resave: false, 
-//    saveUninitialized: true, 
+//    resave: false,
+//    saveUninitialized: true,
 //    secret: process.env.COOKIE_SECRET,
 //    cookie: {
 //       httpOnly: true,
@@ -75,9 +87,8 @@ app.use(
 //    },
 //    // 세션 데이터를 로컬 서버 메모리가 아닌 redis db에 저장하도록 등록
 //    store: new RedisStore({ client: redisClient, prefix: 'session:' }),
-// }; 
+// };
 // app.use(session(sessionOption));
-
 
 const router = require('./routes');
 
