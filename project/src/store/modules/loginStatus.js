@@ -6,6 +6,8 @@ const initState = {
 
 // 액션 타입 정의하기
 const SUCCESS = 'login/SUCCESS';
+const LOGOUT = 'login/LOGOUT';
+const UNREGISTER = 'login/UNREFISTER';
 
 // 액션 생성 함수 설정
 // Payload = 컴포넌트에서 보내준 데이터를 전달하는 역할을 한다.
@@ -13,6 +15,18 @@ export function success(payload) {
   return {
     type: SUCCESS,
     payload,
+  };
+}
+
+export function logout() {
+  return {
+    type: LOGOUT,
+  };
+}
+
+export function unRegister() {
+  return {
+    type: UNREGISTER,
   };
 }
 
@@ -32,6 +46,18 @@ export default function loginStatus(state = initState, action) {
         ...state,
         isLogin: true,
         id: action.payload.id,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isLogin: false,
+        id: '',
+      };
+    case UNREGISTER:
+      return {
+        ...state,
+        isLogin: false,
+        id: '',
       };
     // case DONE:
     //   return {

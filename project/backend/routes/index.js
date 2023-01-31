@@ -28,6 +28,13 @@ router.post(
   controllerUser.registerCertificationCheck
 );
 
-router.post('/test', controllerUser.test);
+// 토큰 인증 검사
+router.post('/tokenAuth', controllerUser.tokenAuth);
+
+// 로그아웃
+router.post('/logout', controllerUser.logout);
+
+// 회원탈퇴
+router.post('/unregister', controllerUser.unRegister);
 
 module.exports = router;

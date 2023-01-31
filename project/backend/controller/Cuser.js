@@ -18,6 +18,48 @@ const cookieOption = {
 // ps2. redisCli = .v4로 적용했는데도 안되는걸로 봐서는 안되는 것 같다.
 const redisCli = redisClient.v4;
 
+// 회원탈퇴
+exports.unRegister = async (req, res) => {
+  const refreshTokenId = req.signedCookies.jsid;
+
+  if (refreshTokenId) {
+    await JWToken.destroy({
+      where: {
+        jwtid: refreshTokenId,
+      },
+    });
+  }
+
+  const result = await User.destroy({
+    where: {
+      id: req.body.id,
+    },
+  });
+
+  if (result) {
+    res.clearCookie('jsid');
+    res.send(true);
+  } else {
+    res.send(false);
+  }
+};
+
+// 로그아웃
+exports.logout = async (req, res) => {
+  const refreshTokenId = req.signedCookies.jsid;
+
+  if (refreshTokenId) {
+    await JWToken.destroy({
+      where: {
+        jwtid: refreshTokenId,
+      },
+    });
+  }
+
+  res.clearCookie('jsid');
+  res.send(true);
+};
+
 // 문자인증 요청
 exports.registerCertification = async (req, res) => {
   // console.log('req.body.phone', req.body.phone);
@@ -77,7 +119,7 @@ exports.register = async (req, res) => {
       id: req.body.id,
       name: req.body.name,
       pwd: password,
-      phone: req.body.phone,
+      phone: req.body.phone.replaceAll('-', ''),
       phonecertifi: '1',
       email: req.body.email,
       privacy: '1',
@@ -146,8 +188,8 @@ exports.login = async (req, res) => {
   }
 };
 
-// AccessToken 검사
-exports.test = async (req, res) => {
+// tokenAuth 검사
+exports.tokenAuth = async (req, res) => {
   const accessToken = req.get('Authorization').slice(7);
   console.log('AccessToken', accessToken);
 
