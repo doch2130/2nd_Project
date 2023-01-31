@@ -1,5 +1,6 @@
 const express = require('express');
 const controllerUser = require('../controller/Cuser');
+const controllerStatus = require('../controller/status');
 
 const router = express.Router();
 
@@ -19,8 +20,13 @@ router.post('/register/complete', controllerUser.register);
 // 회원가입 문자 인증
 router.post('/register/certification', controllerUser.registerCertification);
 
-router.post('/register/certification/Check', controllerUser.registerCertificationCheck);
+router.post(
+  '/register/certification/Check',
+  controllerUser.registerCertificationCheck
+);
 
 router.post('/test', controllerUser.test);
+
+router.post('/auth/login', controllerStatus.loginStatus);
 
 module.exports = router;

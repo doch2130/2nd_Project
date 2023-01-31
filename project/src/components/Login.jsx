@@ -1,12 +1,13 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 테스트
 import { success } from '../store/modules/loginStatus';
+import { useEffect } from 'react';
 
 export default function Login() {
   const h100 = {
@@ -17,8 +18,16 @@ export default function Login() {
     textAlign: 'center'
   }
 
-  // const isLogin = useSelector((state) => state.loginStatus.isLogin);
+  const isLogin = useSelector((state) => state.loginStatus.isLogin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // 임시 방편, 로그인 시 다시 리다이렉트
+  useEffect(() => {
+    if(isLogin) {
+      navigate('/');
+    }
+  }, [isLogin]);
 
   const [showPwd, setShowPwd] = useState(false);
   const [showPwdDiv, setShowPwdDiv] = useState(false);
@@ -66,6 +75,7 @@ export default function Login() {
 		  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       // 로그인 정보 reducer로 전달
       dispatch(success({id: response.data.id}));
+      navigate('/');
 
       // console.log(response);
       // console.log(accessToken);

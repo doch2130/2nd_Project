@@ -47,7 +47,7 @@ module.exports = {
           // 해싱 알고리즘
           algorithm: process.env.JWT_ALGORITHM,
         }
-      )
+      ),
     };
     return result;
   },
@@ -85,6 +85,31 @@ module.exports = {
     const base64_payload = token.split('.')[1];
     const payload = Buffer.from(base64_payload, 'base64');
     const result = JSON.parse(payload.toString());
+    return result;
+  },
+
+  // AccessToken 재발급
+  reAccessSign: async (user) => {
+    const result = {
+      accessToken: jwt.sign(
+        {
+          id: user.id,
+          phone: user.phone,
+          email: user.email,
+          // pwd는 일단 넣고 나중에 빼는 걸로
+          pwd: user.pwd,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          // 만료시간
+          expiresIn: '5m',
+          // 발행자
+          issuer: process.env.JWT_ISSUER,
+          // 해싱 알고리즘
+          algorithm: process.env.JWT_ALGORITHM,
+        }
+      ),
+    };
     return result;
   },
 };

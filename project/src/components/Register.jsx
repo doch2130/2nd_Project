@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function Register() {
   const h100 = {
@@ -29,6 +30,16 @@ export default function Register() {
 
   const certifiResult = useRef();
   const [iscertifiResult, setIscertifiResult] = useState(false);
+
+
+  
+  const isLogin = useSelector((state) => state.loginStatus.isLogin);
+  // 임시 방편, 로그인 시 다시 리다이렉트
+  useEffect(() => {
+    if(isLogin) {
+      navigate('/');
+    }
+  }, [isLogin]);
 
   // count 1번, count 2번 toggle 실행 함수
   const toggleStart = () => {
