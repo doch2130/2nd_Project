@@ -146,8 +146,104 @@ exports.login = async (req, res) => {
   }
 };
 
+// AccessToken 검사
 exports.test = async (req, res) => {
-  // console.log('헤더', req.get('Authorization'));
-  // console.log('헤더쿠키', req.get('Cookie'));
-  res.send(true);
+  const accessToken = req.get('Authorization').slice(7);
+  console.log('AccessToken', accessToken);
+
+  const { jsid } = req.signedCookies;
+  console.log('jsidCookie', jsid);
+
+  if (accessToken) {
+    const accessTokenAuth = await jwt.vertify(accessToken, 'access');
+
+    if (accessTokenAuth === -2) {
+      console.log('AccessToken Invalid');
+      res.send({ msg: 'AccessToken Invalid' });
+    } else if (accessTokenAuth === -3) {
+      console.log('AccessToken Expired');
+      // Refresh Token 검사
+      if (jsid) {
+        const refreshTokenAuth = await refreshTokenCheck(jsid);
+        console.log('refreshTokenAuth', refreshTokenAuth);
+        if (refreshTokenAuth.msg === 'Refresh Expired') {
+          console.log('Access Expired, Refresh Expired');
+          res.send({ msg: 'Access, Refresh NotFound' });
+        } else if (refreshTokenAuth.reAccessToken) {
+          console.log('Access Expired => ReCreate');
+          res.send({
+            accessToken: refreshTokenAuth.reAccessToken,
+            msg: 'Access Token Success',
+          });
+        } else {
+          res.status(500).send({ msg: 'error' });
+        }
+      } else {
+        console.log('Access Expired, Refresh NotFound');
+        res.send({ msg: 'Access, Refresh NotFound' });
+      }
+    } else {
+      // Access Token 정상인 경우
+      console.log('Access Token Excellent');
+      res.send({ msg: 'Access Token Excellent' });
+    }
+  } else {
+    console.log('AccessToken Undefined');
+    // Refresh Token 검사
+    if (jsid) {
+      const refreshTokenAuth = await refreshTokenCheck(jsid);
+      console.log('refreshTokenAuth', refreshTokenAuth);
+      if (refreshTokenAuth.msg === 'Refresh Expired') {
+        console.log('Access Undefined, Refresh Expired');
+        res.send({ msg: 'Access, Refresh NotFound' });
+      } else if (refreshTokenAuth.reAccessToken) {
+        console.log('Access Undefined => ReCreate');
+        res.send({
+          accessToken: refreshTokenAuth.reAccessToken,
+          msg: 'Access Token Success',
+        });
+      } else {
+        res.status(500).send({ msg: 'error' });
+      }
+    } else {
+      console.log('Access, Refresh NotFound');
+      res.send({ msg: 'Access, Refresh NotFound' });
+    }
+  }
 };
+
+async function refreshTokenCheck(refreshTokenId) {
+  const token = await JWToken.findOne({
+    where: {
+      jwtid: refreshTokenId,
+    },
+  });
+
+  console.log('refreshTokenCheck', token);
+
+  const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
+  console.log(refreshTokenAuth);
+
+  if (!refreshTokenAuth.id) {
+    console.log('Refresh_Token_Expired');
+    await JWToken.destroy({
+      where: {
+        jwtid: refreshTokenId,
+      },
+    });
+    return { msg: 'Refresh Expired' };
+  }
+
+  const AccessPayload = {
+    id: refreshTokenAuth.id,
+    phone: refreshTokenAuth.phone,
+    email: refreshTokenAuth.email,
+    pwd: refreshTokenAuth.pwd,
+  };
+
+  const reAccessToken = await jwt.reAccessSign(AccessPayload);
+  return {
+    reAccessToken: reAccessToken.accessToken,
+    msg: 'Token ReCreate Success',
+  };
+}
