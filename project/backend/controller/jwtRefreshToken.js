@@ -1,6 +1,8 @@
 const jwt = require('./jwt');
 // const dotenv = require('dotenv');
 
+// 안쓸거 같긴 한데 참고용으로 볼 수 있으니 일단 냅둔다.
+
 module.exports = {
   tokenRefreshCheck: async (req, res) => {
     try {

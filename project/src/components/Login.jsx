@@ -27,6 +27,7 @@ export default function Login() {
     if(isLogin) {
       navigate('/');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
   const [showPwd, setShowPwd] = useState(false);

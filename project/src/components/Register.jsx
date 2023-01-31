@@ -39,6 +39,7 @@ export default function Register() {
     if(isLogin) {
       navigate('/');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
   // count 1번, count 2번 toggle 실행 함수

@@ -11,6 +11,7 @@ exports.loginStatus = async (req, res) => {
 
   if (!jsid) {
     console.log('Not_Refresh_Cookie');
+    res.clearCookie('jsid');
     res.send({ msg: 'Not_Refresh_Cookie' });
     return;
   }
@@ -24,7 +25,19 @@ exports.loginStatus = async (req, res) => {
   // console.log('test', token.refresh);
 
   const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
-  // console.log(refreshTokenAuth);
+  console.log(refreshTokenAuth.id);
+
+  if (!refreshTokenAuth.id) {
+    console.log('Refresh_Token_Expired');
+    await JWToken.destroy({
+      where: {
+        jwtid: jsid,
+      },
+    });
+    res.clearCookie('jsid');
+    res.send({ msg: 'Refresh_Die' });
+    return;
+  }
 
   const AccessPayload = {
     id: refreshTokenAuth.id,
@@ -34,6 +47,8 @@ exports.loginStatus = async (req, res) => {
   };
 
   const reAccessToken = await jwt.reAccessSign(AccessPayload);
+
+  // console.log('파싱', jwt.getParsing(token.refresh));
 
   res.send({
     msg: 'login status success',

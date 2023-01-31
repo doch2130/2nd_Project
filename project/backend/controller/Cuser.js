@@ -128,7 +128,7 @@ exports.login = async (req, res) => {
       // jwtid, refreshToken DB에 저장
       await JWToken.create({
         jwtid: jwtid,
-        refresh: jwtToken.refreshToken
+        refresh: jwtToken.refreshToken,
       });
 
       // 임시 Refresh Token은 쿠키로 전달
@@ -146,43 +146,8 @@ exports.login = async (req, res) => {
   }
 };
 
-
 exports.test = async (req, res) => {
-  console.log('헤더', req.get('Authorization'));
-  console.log('헤더쿠키', req.get('Cookie'));
+  // console.log('헤더', req.get('Authorization'));
+  // console.log('헤더쿠키', req.get('Cookie'));
   res.send(true);
-}
-
-
-// // 로그인 기능
-// exports.login = async (req, res) => {
-//   const password = await hash.makePasswordHashed(req.body.id, req.body.pwd);
-
-//   if (password === 'notFound') {
-//     res.send(false);
-//   } else {
-//     let result = await User.findOne({
-//       where: {
-//         [Op.and]: [
-//           { pwd: password },
-//           {
-//             [Op.or]: [
-//               { id: req.body.id },
-//               { phone: req.body.id },
-//               { email: req.body.id },
-//             ],
-//           },
-//         ],
-//       },
-//     });
-//     // console.log(result);
-
-//     if (result) {
-//       console.log(req.session);
-//       console.log('req.session.id', req.session.id);
-//       res.send(true);
-//     } else {
-//       res.send(false);
-//     }
-//   }
-// };
+};

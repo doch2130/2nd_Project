@@ -42,6 +42,7 @@ module.exports = {
         {
           // 만료시간
           expiresIn: '14 days',
+          // expiresIn: '14',
           // 발행자
           issuer: process.env.JWT_ISSUER,
           // 해싱 알고리즘
@@ -65,6 +66,7 @@ module.exports = {
     try {
       // decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
       decodedToken = jwt.verify(token, secret);
+      // console.log('decodedToken', decodedToken);
     } catch (err) {
       if (err.message === 'jwt expired') {
         console.log('expired token');
