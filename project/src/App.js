@@ -15,9 +15,9 @@ axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
 
 function App() {
-  const isLogin = useSelector((state) => state.loginStatus.isLogin);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.loginStatus.isLogin);
   const [isLoding, setIsLoding] = useState(false);
 
   useEffect(() => {
@@ -27,8 +27,8 @@ function App() {
 
       if (result.data.msg === 'Not_Refresh_Cookie') {
         // value 변조되면 req.signedCookies(암호화된 쿠키)에서 값을 못불러와서 not found로 취급된다.
-        // console.log('not cookie');
-        navigate('/login');
+        console.log('not cookie');
+        // navigate('/login');
       } else if (result.data.msg === 'login status success') {
         const { accessToken } = result.data;
         // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정

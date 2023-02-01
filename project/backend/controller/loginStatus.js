@@ -32,7 +32,7 @@ exports.loginStatus = async (req, res) => {
   }
 
   const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
-  console.log(refreshTokenAuth.id);
+  // console.log(refreshTokenAuth.id);
 
   if (!refreshTokenAuth.id) {
     console.log('Refresh_Token_Expired');

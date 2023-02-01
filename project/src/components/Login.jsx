@@ -22,13 +22,13 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 임시 방편, 로그인 시 다시 리다이렉트
+  // 임시 방편, 로그인 상태인 경우 다시 리다이렉트
   useEffect(() => {
     if(isLogin) {
       navigate('/');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin]);
+  }, []);
 
   const [showPwd, setShowPwd] = useState(false);
   const [showPwdDiv, setShowPwdDiv] = useState(false);
