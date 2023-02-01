@@ -24,6 +24,13 @@ exports.loginStatus = async (req, res) => {
 
   // console.log('test', token.refresh);
 
+  if (!token.refresh) {
+    console.log('Not Same DB Refresh Token');
+    res.clearCookie('jsid');
+    res.send({ msg: 'Refresh_Die' });
+    return;
+  }
+
   const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
   console.log(refreshTokenAuth.id);
 
