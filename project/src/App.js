@@ -56,7 +56,7 @@ function App() {
       <Routes>
         <Route
           path="*"
-          element={isLoding ? <Loding /> : <CombineComponents />}
+          element={!isLoding ? <Loding /> : <CombineComponents />}
         />
       </Routes>
     </>
