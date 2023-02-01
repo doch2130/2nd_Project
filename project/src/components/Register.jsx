@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import Footer from './Footer';
 
 export default function Register() {
   const h100 = {
@@ -321,6 +322,8 @@ export default function Register() {
                 </div>
             </div>
         </Col>
+        
+        <Footer />
       </Row>
     </Container>
   )

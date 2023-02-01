@@ -24,7 +24,7 @@ exports.loginStatus = async (req, res) => {
 
   // console.log('test', token.refresh);
 
-  if (!token.refresh) {
+  if (!token) {
     console.log('Not Same DB Refresh Token');
     res.clearCookie('jsid');
     res.send({ msg: 'Refresh_Die' });

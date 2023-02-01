@@ -4,10 +4,9 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-
-// 테스트
 import { success } from '../store/modules/loginStatus';
 import { useEffect } from 'react';
+import Footer from './Footer';
 
 export default function Login() {
   const h100 = {
@@ -76,7 +75,7 @@ export default function Login() {
 		  axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       // 로그인 정보 reducer로 전달
       dispatch(success({id: response.data.id}));
-      navigate('/');
+      navigate('/home');
 
       // console.log(response);
       // console.log(accessToken);
@@ -138,6 +137,8 @@ export default function Login() {
               <p style={{margin: 'auto'}}>계정이 없으신가요? <Link to="/register" style={{textDecoration: 'none', fontWeight: '700'}}>가입하기</Link></p>
             </div>
           </div>
+
+          <Footer />
         </Col>
       </Row>
     </Container>
