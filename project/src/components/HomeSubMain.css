@@ -1,5 +1,5 @@
 .subMainFooterList {
-  cursor: 'pointer'
+  cursor: pointer;
 }
 
 .subMainFooterList::after {

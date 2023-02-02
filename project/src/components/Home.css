@@ -12,3 +12,13 @@
   top: -3px;
   left: -3px;
 }
+
+.profileImgText {
+  font-size: 0.75rem;
+  color: rgb(176, 176, 176);
+  max-width: 68px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

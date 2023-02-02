@@ -45,7 +45,7 @@ export default function Navbar() {
   
   return (
     <>
-      <Col xs={0} md={2} style={{height: '100%', margin: 'auto', textAlign: 'center', padding: '0px'}} className="d-none d-md-block">
+      <Col xs={0} md={2} style={{height: '100%', margin: 'auto', textAlign: 'center', padding: '0px', borderRight: '1px solid #dbdbdb'}} className="d-none d-md-block">
         <div style={{height: '100%', margin: 'auto', textAlign: 'left'}} >
           <img src='/images/logo_text.png' alt='logo_text_img' style={{margin: '30px 0', width: '100%', maxWidth: '130px'}}/>
           <Nav defaultActiveKey="/home" className="flex-column">

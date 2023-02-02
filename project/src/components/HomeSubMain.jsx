@@ -3,9 +3,9 @@ import { Row, Col } from 'react-bootstrap';
 import './HomeSubMain.css';
 
 export default function HomeSubMain() {
-  const h100 = {
-    height: '100%',
-  }
+  // const h100 = {
+  //   height: '100%',
+  // }
 
   const recomendData = [
     {
@@ -35,8 +35,8 @@ export default function HomeSubMain() {
   ];
   return (
     <>
-    <Col xs={0} lg={6} style={h100} className="d-none d-md-block" >
-      <div style={{textAlign: 'left', maxWidth: '320px'}}>
+    <Col xs={0} lg={3} style={{height: '100%', marginLeft: '64px'}} className="d-none d-md-block" >
+      <div style={{textAlign: 'left', minWidth: '320px', maxWidth: '320px'}}>
         {/* 프로필 1줄 */}
         <Row>
           <Col style={{padding: '0px', maxWidth: '65px'}}>
