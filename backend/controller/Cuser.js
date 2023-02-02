@@ -65,7 +65,7 @@ exports.registerCertification = async (req, res) => {
   // console.log('req.body.phone', req.body.phone);
 
   const resultPhone = await User.findOne({
-    where: { phone: req.body.phone },
+    where: { phone: req.body.phone.replaceAll('-', '') },
   });
 
   if (resultPhone) {
