@@ -16,6 +16,6 @@ db.Sequelize = Sequelize;
 // User 테이블
 db.User = require('./User')(sequelize, Sequelize);
 // JwToken 테이블
-db.JWToken = require('./JWToken')(sequelize, Sequelize);
+db.JWToken = require('./JwToken')(sequelize, Sequelize);
 
 module.exports = db;

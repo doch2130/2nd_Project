@@ -1,0 +1,8 @@
+.subMainFooterList {
+  cursor: 'pointer'
+}
+
+.subMainFooterList::after {
+  content: '\00B7';
+  margin: 0 0.25em 0 0.25em;
+}

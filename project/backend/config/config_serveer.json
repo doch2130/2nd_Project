@@ -1,0 +1,16 @@
+{
+  "development": {
+      "host": "115.85.183.140",
+      "database": "instagram",
+      "username": "insta",
+      "password": "insta1234!",
+      "dialect": "mysql"
+  },
+  "production": {
+      "host": "115.85.183.140",
+      "database": "instagram",
+      "username": "insta",
+      "password": "insta1234!",
+      "dialect": "mysql"
+  }
+}

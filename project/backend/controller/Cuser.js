@@ -81,11 +81,40 @@ exports.registerCertification = async (req, res) => {
 
 // 문자인증 검증
 exports.registerCertificationCheck = async (req, res) => {
-  redisCli.get(req.body.phone, (err, result) => {
-    if (err) throw err;
+  console.log('test');
+  console.log(req.body.phone);
+  // console.log('redis get', redisCli.get('010-9192-5745'));
 
-    res.send(result);
-  });
+  const test = redisCli.get(req.body.phone);
+  console.log('test', test);
+
+  setTimeout(() => {
+    console.log('5 test', test);
+  }, 5000);
+
+  setTimeout(() => {
+    console.log('10 test', test);
+  }, 10000);
+
+  setTimeout(() => {
+    console.log('15 test', test);
+  }, 15000);
+
+  setTimeout(() => {
+    console.log('20 test', test);
+    res.send(test);
+  }, 20000);
+
+  // redisCli.get(req.body.phone, (err, result) => {
+  //   if (err) throw err;
+
+  //   console.log(result);
+  //   res.send(result);
+  // });
+
+  // const result = await redisCli.get('01091925745');
+  // console.log('redis result', result);
+  // res.send(result);
 };
 
 // 회원가입 기능

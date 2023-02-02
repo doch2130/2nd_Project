@@ -7,6 +7,7 @@ const { redisClient } = require('./redis/redis');
 // const RedisStore = require('connect-redis')(session);
 const cookieParser = require('cookie-parser');
 // const jwt = require('jsonwebtoken');
+// const path = require('path');
 
 dotenv.config({
   path: './config/.env',
@@ -44,15 +45,22 @@ const app = express();
 
 // app.set('view engine', 'ejs');
 // app.use('/static', express.static(__dirname + '/public'));
+// app.use(
+//   cors({
+//     origin: ['http://localhost:3000', 'http://115.85.183.140:3000'],
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: true,
     credentials: true,
   })
 );
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+// app.use(express.static(path.join(__dirname, '../build')));
 // app.use(
 //   session({
 //     secret: '1234',
@@ -94,6 +102,10 @@ app.use(session(sessionOption));
 const router = require('./routes');
 
 app.use('/', router);
+
+// app.get('*', function (req, res) {
+//   res.sendFile(path.join(__dirname, '/react-project/build/index.html'));
+// });
 
 app.get('*', (req, res) => {
   res.status(404).send('주소가 존재하지 않습니다. 다시 한 번 확인해주세요.');
