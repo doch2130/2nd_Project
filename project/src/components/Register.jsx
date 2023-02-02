@@ -129,14 +129,17 @@ export default function Register() {
 
   // 인증번호 일치 확인 함수
   async function phoneCertifiResult() {
-    console.log('클릭');
+    // console.log('클릭');
     const response = await axios.post('/register/certification/Check', {
       phone: getValues('phone')
     });
 
-    console.log('인증번호 일치 결과', response);
+    // console.log('인증번호 일치 결과', response);
 
-    if(String(response.data) === certifiResult.current.value) {
+    if (count <= 0) {
+      alert('인증번호가 만료되었습니다. 다시 요청해주세요.');
+    // } else if(String(response.data) === certifiResult.current.value) {
+    } else if(response.data.smscode === certifiResult.current.value) {
       alert('인증번호가 일치합니다.');
       // 성공하면 인터벌 초기화 및 false
       setIsStart( false );
@@ -145,9 +148,7 @@ export default function Register() {
       // 성공하면 phone 번호 변경 불가능하게 disabled 설정
       phoneDiv.current.children[0].disabled = true;
       phoneDiv.current.children[2].disabled = true;
-      phoneDiv.current.nextElementSibling.nextElementSibling.children[2].disabled = true;
-    } else if (count <= 0) {
-      alert('인증번호가 만료되었습니다. 다시 요청해주세요.');
+      // phoneDiv.current.nextElementSibling.nextElementSibling.children[2].disabled = true;
     } else {
       alert('인증번호가 일치하지 않습니다.');
     }
@@ -296,7 +297,7 @@ export default function Register() {
                     <label htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}} >인증번호</label>
                     {/* disalbed 를 ||로 하면 onclick 이벤트가 실행이 안되고, &&로 하면 실행이 된다.
                     그리고 &&로 해도 || 랑 동일한 결과가 나온다. 왜인지 이해가 안간다....*/}
-                    <Button onClick={() => phoneCertifiResult()} style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}} >인증</Button>
+                    <Button disabled={!isStart && !isReStart} onClick={() => phoneCertifiResult()} style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}} >인증</Button>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {/* 인증번호 시간 표시 - 함수 2개 번갈아가면서 실행 */}
