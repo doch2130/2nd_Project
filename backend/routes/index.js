@@ -1,7 +1,7 @@
 const express = require('express');
 const controllerUser = require('../controller/Cuser');
 const controllerLoginStatus = require('../controller/loginStatus');
-const controllerPostData = require('../controller/postData');
+const controllerPostData = require('../controller/postDataList');
 
 const router = express.Router();
 
@@ -40,5 +40,8 @@ router.post('/unregister', controllerUser.unRegister);
 
 // 포스트 데이터 불러오기 (기본 값 5개)
 router.post('/post/data', controllerPostData.defaultData);
+
+// 포스트 데이터 추가하기 (테스트용)
+router.post('/post/data/add', controllerPostData.testAddData);
 
 module.exports = router;

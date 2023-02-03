@@ -20,6 +20,7 @@ const initState = {
 
 // 액션 타입 정의하기
 const POSTINIT = 'post/init';
+const POSTADD = 'post/add';
 
 // 액션 생성 함수 설정
 // Payload = 컴포넌트에서 보내준 데이터를 전달하는 역할을 한다.
@@ -28,6 +29,13 @@ export function postInit(payload) {
     type: POSTINIT,
     payload,
   };
+}
+
+export function postAdd(payload) {
+  return {
+    type: POSTADD,
+    payload,
+  }
 }
 
 // reducer
@@ -47,6 +55,18 @@ export default function postData(state = initState, action) {
           category: action.payload.category
         }),
       };
+    case POSTADD:
+      return {
+        ...state,
+        list: state.list.concat({
+          number: action.payload.number,
+          id: action.payload.id,
+          content: action.payload.content,
+          filename: '/post/images/' + action.payload.filename,
+          date: action.payload.date,
+          category: action.payload.category
+        }),
+      }
     default:
       return state;
   }
