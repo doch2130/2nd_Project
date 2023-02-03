@@ -44,7 +44,9 @@ function App() {
       }
 
       // console.log('Loding Success');
-      setIsLoding(true);
+      setTimeout(() => {
+        setIsLoding(true);
+      }, 1000);
     }
 
     if (!isLogin) {

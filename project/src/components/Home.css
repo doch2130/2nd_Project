@@ -1,4 +1,4 @@
-.profileImgCircle {
+/* .profileImgCircle {
   width: 70px;
   height: 70px;
   position: absolute;
@@ -22,3 +22,11 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.commentTextarea {
+  border: none;
+  border-bottom: 1px solid black;
+  width: 440px;
+  outline: none;
+  resize: none;
+} */

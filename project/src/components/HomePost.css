@@ -1,0 +1,17 @@
+.profileImgText {
+  font-size: 0.75rem;
+  color: rgb(176, 176, 176);
+  max-width: 68px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.commentTextarea {
+  border: none;
+  border-bottom: 1px solid black;
+  width: 440px;
+  outline: none;
+  resize: none;
+}
