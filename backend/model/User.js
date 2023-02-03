@@ -18,6 +18,7 @@ const User = (Sequelize, DataTypes) => {
       phone: {
         type: DataTypes.STRING(15),
         allowNull: false,
+        unique: true,
       },
       phonecertifi: {
         type: DataTypes.BOOLEAN,
@@ -26,6 +27,7 @@ const User = (Sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING(255),
         allowNull: false,
+        unique: true,
       },
       privacy: {
         type: DataTypes.BOOLEAN,
