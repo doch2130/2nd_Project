@@ -73,6 +73,18 @@ const sessionOption = {
     secure: false,
   },
 };
+// const sessionOption = {
+//   resave: false,
+//   saveUninitialized: true,
+//   secret: process.env.COOKIE_SECRET,
+//   cookie: {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: 'none',
+//   },
+// };
+// app.set('trust proxy', 1);
+
 app.use(session(sessionOption));
 
 // redis 세션 시도

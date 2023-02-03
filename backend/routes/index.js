@@ -1,6 +1,7 @@
 const express = require('express');
 const controllerUser = require('../controller/Cuser');
 const controllerLoginStatus = require('../controller/loginStatus');
+const controllerPostData = require('../controller/postData');
 
 const router = express.Router();
 
@@ -36,5 +37,8 @@ router.post('/logout', controllerUser.logout);
 
 // 회원탈퇴
 router.post('/unregister', controllerUser.unRegister);
+
+// 포스트 데이터 불러오기 (기본 값 5개)
+router.post('/post/data', controllerPostData.defaultData);
 
 module.exports = router;

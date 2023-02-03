@@ -1,7 +1,11 @@
+import axios from 'axios';
 import React, { useRef } from 'react'
 import { Row, Col } from 'react-bootstrap';
 import HomePostTop from './HomePostTop';
 import './HomePost.css';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { postInit } from '../store/modules/postData';
 
 export default function HomePost() {
   const fullH_Mid = {
@@ -17,6 +21,22 @@ export default function HomePost() {
     commentTextarea.current.style.height = commentTextarea.current.scrollHeight + 'px';
   }
 
+  const dispatch = useDispatch();
+  const postDataList = useSelector((state) => state.postData.list);
+  console.log(postDataList);
+
+  useEffect(() => {
+    async function postDataInit() {
+      const result = await axios.post('/post/data');
+      // console.log(result.data[0]);
+      result.data.map((el) => {
+        // console.log(el);
+        dispatch(postInit(el));
+      });
+    }
+    postDataInit();
+  }, []);
+
   return (
     <>
     <Col xs={12} lg={6} style={fullH_Mid} >
@@ -27,9 +47,11 @@ export default function HomePost() {
         <Col style={{padiing: '0px', minWidth: '470px', maxWidth: '470px'}}>
           {/* 최상단 신규 소식? */}
           <HomePostTop />
-
           {/* 본문 */}
           {/* 이미지, 아이디, 작성 경과시간 */}
+          {postDataList.map((el) => {
+            return (
+          <div key={el.number}>
           <Row style={{marginTop: '30px'}}>
             <Col style={{padding: '0px'}}>
               <Row style={{maxWidth: '470px', margin: '0px'}}>
@@ -43,13 +65,16 @@ export default function HomePost() {
                       <div>
                         <div>
                           <div>
-                            <span style={{fontWeight: '700'}}>raon</span>
+                            {/* <span style={{fontWeight: '700'}}>raon</span> */}
+                            <span style={{fontWeight: '700'}}>{el.id}</span>
                             {/* <span style={{margin: '0 5px'}}>*</span> */}
                             <div style={{margin: '0px 5px 2px', border: '1px solid #777', borderRadius: '50px', width: '3px', height: '3px', display: 'inline-block'}}></div>
-                            <span style={{color: '#777'}}>7시간</span>
+                            {/* <span style={{color: '#777'}}>7시간</span> */}
+                            <span style={{color: '#777'}}>{el.date}</span>
                           </div>
                           {/* 광고는 없는 경우도 있음 */}
-                          <div>광고</div>
+                          {/* <div>광고</div> */}
+                          <div>{el.category}</div>
                         </div>
                       </div>
                     </div>
@@ -65,7 +90,8 @@ export default function HomePost() {
           <Row style={{marginTop: '10px'}}>
             <Col style={{padding: '0px'}}>
               <div className='HomePostImg'>
-                <img src='/images/HomeImg1.png' alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/>
+                {/* <img src='/images/HomeImg1.png' alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/> */}
+                <img src={el.filename} alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/>
               </div>
             </Col>
           </Row>
@@ -98,10 +124,13 @@ export default function HomePost() {
           <Row style={{marginTop: '5px'}}>
             <Col style={{padding: '0px', textAlign: 'left'}}>
               <div style={{display: 'flex', fontSize: '0.85rem', maxWidth: '310px'}}>
-                {/* <div style={{fontWeight: '700'}}>닉네임</div> */}
-                <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                {/* <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                   <div style={{fontWeight: '700', display: 'inline'}}>아이디 </div>
                   본문 내용이 들어가야 합니다. 본문 내용이 들어가야 합니다.
+                </div> */}
+                <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                  <div style={{fontWeight: '700', display: 'inline'}}>{el.id} </div>
+                  {el.content}
                 </div>
                 <div style={{cursor: 'pointer', color: '#777', minWidth: '46px'}}>더 보기</div>
                 <pre>
@@ -122,7 +151,11 @@ export default function HomePost() {
               <div style={{cursor: 'pointer', color: '#47afff', display: 'inline'}}>게시</div>
             </Col>
           </Row>
-          {/* 본문 끝 */}
+          </div>
+          // {/* 본문 끝 */}
+            )})
+          }
+          
         </Col>
       </Row>
       {/* 본문 Wrap 끝 */}

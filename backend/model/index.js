@@ -18,6 +18,8 @@ db.User = require('./User')(sequelize, Sequelize);
 // JwToken 테이블
 db.JWToken = require('./JwToken')(sequelize, Sequelize);
 // SMS 인증 테이블
-db.SMSCertify = require('./smsCertify')(sequelize, Sequelize);
+db.SMSCertify = require('./SmsCertify')(sequelize, Sequelize);
+// Post 테이블
+db.PostList = require('./PostList')(sequelize, Sequelize);
 
 module.exports = db;

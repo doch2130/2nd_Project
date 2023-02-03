@@ -13,6 +13,16 @@ const cookieOption = {
   signed: true,
 };
 
+// const cookieOption = {
+//   httpOnly: true,
+//   secure: true,
+//   maxAge: 1000 * 60 * 60 * 24 * 14,
+//   signed: true,
+//   sameSite: 'none',
+//   // 배포 시 주석 해제
+//   // domain: 'http://115.85.183.140:3000'
+// };
+
 // v4 버전부터 Promise 기능이 기본이라고 설명서에는 나와있지만
 // 현재 Node Project에서는 기능이 Promise 기능이 안된다.
 // ps. redisCli.v4.set 방식으로 사용해야 v4 버전에 해당한다.
