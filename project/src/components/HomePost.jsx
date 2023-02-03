@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Row, Col } from 'react-bootstrap';
 import HomePostTop from './HomePostTop';
 import './HomePost.css';
@@ -9,13 +9,21 @@ export default function HomePost() {
     margin: 'auto',
     textAlign: 'center',
   }
+
+  const commentTextarea = useRef();
+
+  const commentTextareaHeightAuto = () => {
+    commentTextarea.current.style.height = 'auto';
+    commentTextarea.current.style.height = commentTextarea.current.scrollHeight + 'px';
+  }
+
   return (
     <>
     <Col xs={12} lg={6} style={fullH_Mid} >
       {/* <h2>Main Right Align</h2> */}
       {/* <h3>991px 이하 Center Align</h3> */}
       {/* 본문 Wrap */}
-      <Row style={{justifyContent: 'flex-end'}}>
+      <Row className='HomeSubMainChange' style={{justifyContent: 'flex-end'}}>
         <Col style={{padiing: '0px', minWidth: '470px', maxWidth: '470px'}}>
           {/* 최상단 신규 소식? */}
           <HomePostTop />
@@ -56,7 +64,7 @@ export default function HomePost() {
           {/* 사진, 동영상 */}
           <Row style={{marginTop: '10px'}}>
             <Col style={{padding: '0px'}}>
-              <div style={{border: '1px solid #E9E9E9', borderRadius: '5px', position: 'relative', width: '470px', height: '470px'}}>
+              <div className='HomePostImg'>
                 <img src='/images/HomeImg1.png' alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/>
               </div>
             </Col>
@@ -108,9 +116,9 @@ export default function HomePost() {
             </Col>
           </Row>
           {/* 댓글 입력 */}
-          <Row style={{marginTop: '5px'}}>
+          <Row style={{marginTop: '5px', marginBottom: '70px'}}>
             <Col style={{padding: '0px', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between'}}>
-              <textarea className='commentTextarea' rows={1} placeholder='댓글 달기' />
+              <textarea ref={commentTextarea} className='commentTextarea' rows={1} placeholder='댓글 달기' onChange={() => commentTextareaHeightAuto()} />
               <div style={{cursor: 'pointer', color: '#47afff', display: 'inline'}}>게시</div>
             </Col>
           </Row>

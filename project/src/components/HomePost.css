@@ -14,4 +14,38 @@
   width: 440px;
   outline: none;
   resize: none;
+  overflow: hidden;
 }
+
+@media (max-width: 1150px) {
+  .HomeSubMainChange {
+    justify-content: center !important;
+    padding: 0px 15px;
+  }
+}
+
+@media (max-width: 470px) {
+  .HomeSubMainChange > div:nth-child(1) {
+    max-width: none !important;
+    min-width: 0px !important;
+    padding: 0px !important;
+  }
+
+  .HomePostImg {
+    max-width: 100% !important;
+    margin: auto;
+  }
+
+  .commentTextarea + div {
+    min-width: 30px !important;
+  }
+}
+
+.HomePostImg {
+  border: 1px solid #E9E9E9;
+  border-radius: 5px;
+  position: relative;
+  width: 470px;
+  height: 470px;
+}
+

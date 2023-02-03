@@ -1,32 +1,12 @@
-/* .profileImgCircle {
-  width: 70px;
-  height: 70px;
-  position: absolute;
-  border: 3px solid transparent;
-  border-radius: 50%;
-  background-image: linear-gradient(#fff, #fff), 
-  linear-gradient(to right, red 0%,  orange 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  z-index: -1;
-  top: -3px;
-  left: -3px;
+@media (max-width: 1150px) {
+  .HomeSubMainNone {
+    display: none !important;
+  }
 }
 
-.profileImgText {
-  font-size: 0.75rem;
-  color: rgb(176, 176, 176);
-  max-width: 68px;
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 
-.commentTextarea {
-  border: none;
-  border-bottom: 1px solid black;
-  width: 440px;
-  outline: none;
-  resize: none;
-} */
+@media (max-width: 470px) {
+  .container-fluid > div.row:nth-child(1) {
+    padding: 0px 6px;
+  }
+}

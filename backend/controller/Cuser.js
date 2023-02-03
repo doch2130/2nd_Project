@@ -1,7 +1,8 @@
-const { User, JWToken, SMSCertify } = require('../model/index');
 const { Op } = require('sequelize');
+const { User, JWToken, SMSCertify } = require('../model/index');
+
 // const { redisClient } = require('../redis/redis');
-const { sendVerificationSMS } = require('../controller/naverSensUtill');
+const { sendVerificationSMS } = require('./naverSensUtill');
 const hash = require('./hash');
 const jwt = require('./jwt');
 
@@ -65,32 +66,32 @@ exports.registerCertification = async (req, res) => {
   // console.log('req.body.phone', req.body.phone);
 
   const resultPhone = await User.findOne({
-    where: { phone: req.body.phone.replaceAll('-', '') },
+    where: { phone: req.body.phone },
   });
 
   if (resultPhone) {
     res.send('already_join_phone');
   } else {
     const vertificationCode = await sendVerificationSMS(req.body.phone);
-    
+
     const existResult = await SMSCertify.findOne({
       where: {
         phone: req.body.phone,
-      }
-    })
-    
-    if(existResult) {
+      },
+    });
+
+    if (existResult) {
       await SMSCertify.destroy({
         where: {
-          phone: req.body.phone
-        }
+          phone: req.body.phone,
+        },
       });
     }
 
     const data = {
       phone: req.body.phone,
       smscode: vertificationCode,
-    }
+    };
     await SMSCertify.create(data);
     // redisCli.set(req.body.phone, vertificationCode);
     // redisCli.expire(req.body.phone, 300);
@@ -104,7 +105,7 @@ exports.registerCertificationCheck = async (req, res) => {
   const result = await SMSCertify.findOne({
     where: {
       phone: req.body.phone,
-    }
+    },
   });
   res.send(result);
   // redisCli.get(req.body.phone, (err, result) => {
@@ -145,7 +146,7 @@ exports.register = async (req, res) => {
       id: req.body.id,
       name: req.body.name,
       pwd: password,
-      phone: req.body.phone.replaceAll('-', ''),
+      phone: req.body.phone,
       phonecertifi: '1',
       email: req.body.email,
       privacy: '1',
@@ -169,7 +170,7 @@ exports.login = async (req, res) => {
   if (password === 'notFound') {
     res.send(false);
   } else {
-    let result = await User.findOne({
+    const result = await User.findOne({
       where: {
         [Op.and]: [
           { pwd: password },
@@ -195,9 +196,19 @@ exports.login = async (req, res) => {
 
       // jwtid, refreshToken DB에 저장
       await JWToken.create({
-        jwtid: jwtid,
+        jwtid,
         refresh: jwtToken.refreshToken,
       });
+
+      // const loginCookieOption = {
+      //   httpOnly: true,
+      //   secure: false,
+      //   maxAge: 1000 * 60 * 60 * 24 * 30,
+      //   signed: true,
+      // };
+
+      // 로그인 정보 저장
+      // res.cookie('logincookie', req.body.id, loginCookieOption);
 
       // 임시 Refresh Token은 쿠키로 전달
       res.cookie('jsid', jwtid, cookieOption);
@@ -213,6 +224,42 @@ exports.login = async (req, res) => {
     }
   }
 };
+
+async function refreshTokenCheck(refreshTokenId) {
+  const token = await JWToken.findOne({
+    where: {
+      jwtid: refreshTokenId,
+    },
+  });
+
+  console.log('refreshTokenCheck', token);
+
+  const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
+  console.log(refreshTokenAuth);
+
+  if (!refreshTokenAuth.id) {
+    console.log('Refresh_Token_Expired');
+    await JWToken.destroy({
+      where: {
+        jwtid: refreshTokenId,
+      },
+    });
+    return { msg: 'Refresh Expired' };
+  }
+
+  const AccessPayload = {
+    id: refreshTokenAuth.id,
+    phone: refreshTokenAuth.phone,
+    email: refreshTokenAuth.email,
+    pwd: refreshTokenAuth.pwd,
+  };
+
+  const reAccessToken = await jwt.reAccessSign(AccessPayload);
+  return {
+    reAccessToken: reAccessToken.accessToken,
+    msg: 'Token ReCreate Success',
+  };
+}
 
 // tokenAuth 검사
 exports.tokenAuth = async (req, res) => {
@@ -279,39 +326,3 @@ exports.tokenAuth = async (req, res) => {
     }
   }
 };
-
-async function refreshTokenCheck(refreshTokenId) {
-  const token = await JWToken.findOne({
-    where: {
-      jwtid: refreshTokenId,
-    },
-  });
-
-  console.log('refreshTokenCheck', token);
-
-  const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
-  console.log(refreshTokenAuth);
-
-  if (!refreshTokenAuth.id) {
-    console.log('Refresh_Token_Expired');
-    await JWToken.destroy({
-      where: {
-        jwtid: refreshTokenId,
-      },
-    });
-    return { msg: 'Refresh Expired' };
-  }
-
-  const AccessPayload = {
-    id: refreshTokenAuth.id,
-    phone: refreshTokenAuth.phone,
-    email: refreshTokenAuth.email,
-    pwd: refreshTokenAuth.pwd,
-  };
-
-  const reAccessToken = await jwt.reAccessSign(AccessPayload);
-  return {
-    reAccessToken: reAccessToken.accessToken,
-    msg: 'Token ReCreate Success',
-  };
-}

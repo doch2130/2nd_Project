@@ -40,12 +40,13 @@ export default function Navbar() {
       body.style.backgroundColor = 'black';
       body.style.color = 'white';
     }
+    // console.log('navBarWrap', navBarWrap.current.clientWidth);
+    // console.log('navBarWrap', typeof(navBarWrap.current.clientWidth));
   }, [invertColor]);
-
-  
+    
   return (
     <>
-      <Col xs={0} md={2} style={{height: '100%', margin: 'auto', textAlign: 'center', padding: '0px', borderRight: '1px solid #dbdbdb'}} className="d-none d-md-block">
+      <Col xs={0} md={2} style={{padding: '0px', borderRight: '1px solid #dbdbdb', maxWidth: '250px'}} className="d-none d-md-block">
         <div style={{height: '100%', margin: 'auto', textAlign: 'left'}} >
           <img src='/images/logo_text.png' alt='logo_text_img' style={{margin: '30px 0', width: '100%', maxWidth: '130px'}}/>
           <Nav defaultActiveKey="/home" className="flex-column">
@@ -59,7 +60,7 @@ export default function Navbar() {
             <Nav.Link eventKey="link-7">프로필</Nav.Link>
             {/* <Nav.Link eventKey="disabled" disabled>Disabled</Nav.Link> */}
           </Nav>
-          <div style={{position: 'absolute', bottom: '30px', width: '100%'}}>
+          {/* <div style={{position: 'absolute', bottom: '30px', width: '100%'}}>
             <DropdownButton id="dropdown-item-button-up" drop='up' title='' style={{display: 'inline-block'}}>
               <Dropdown.Item as="button">설정</Dropdown.Item>
               <Dropdown.Divider />
@@ -78,7 +79,27 @@ export default function Navbar() {
               <Dropdown.Item as="button" onClick={() => logoutRequest()}>로그아웃</Dropdown.Item>
             </DropdownButton>
             <span style={{marginLeft: '15px'}}>더 보기</span>
-          </div>
+          </div> */}
+        </div>
+        <div style={{position: 'relative', bottom: '50px', width: '100%'}}>
+          <DropdownButton id="dropdown-item-button-up" drop='up' title='' style={{display: 'inline-block'}}>
+            <Dropdown.Item as="button">설정</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item as="button">저장됨</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item as="button" onClick={() => colorInversion()}>모드 전환</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item as="button">내 활동</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item as="button">문제 신고</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item as="button" onClick={() => {
+              setSwitchAccountModal(true);
+            }}>계정 전환</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item as="button" onClick={() => logoutRequest()}>로그아웃</Dropdown.Item>
+          </DropdownButton>
+          <span style={{marginLeft: '15px'}}>더 보기</span>
         </div>
         <SwitchAccountModal show={switchAccountModal} onHide={() => setSwitchAccountModal(false)} />
       </Col>

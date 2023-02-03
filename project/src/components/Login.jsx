@@ -111,8 +111,8 @@ export default function Login() {
               </div>
             </div>
             <div style={{width: '260px', textAlign: 'left', margin: 'auto', marginBottom: '10px'}}>
-              <input type='checkbox' name='loginCookie' id='lgoinCookie' value='loginCookie' />
-              <label htmlFor='lgoinCookie' style={{marginLeft: '5px'}}>로그인 정보 저장하기</label>
+              <input type='checkbox' name='loginCookie' id='loginCookie' value='true' />
+              <label htmlFor='loginCookie' style={{marginLeft: '5px'}}>로그인 정보 저장하기</label>
             </div>
             <Button onClick={() => login()} style={{width: '260px'}}>로그인</Button>
             <br />

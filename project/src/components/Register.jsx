@@ -100,7 +100,7 @@ export default function Register() {
   // 인증번호 요청 함수
   async function phoneCertifiRequest() {
     // console.log(getValues('phone'));
-    const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+    const phoneRegex = /^\d{3}\d{3,4}\d{4}$/;
 
     if(phoneRegex.test(getValues('phone'))) {
       const chooseMsg = window.confirm('해당 번호로 발송하시겠습니까?');
@@ -277,12 +277,12 @@ export default function Register() {
                 </div>
 
                 <div className="form-floating" ref={phoneDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
-                    <input type="tel" name='phone' className="form-control" id="floatingInputPhone" placeholder="010-0000-0000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='15'
+                    <input type="tel" name='phone' className="form-control" id="floatingInputPhone" placeholder="01000000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='12'
                     {...register('phone', {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
-                        value: /^\d{3}-\d{3,4}-\d{4}$/,
-                        message: '000-0000-0000, 형식에 맞게 입력해주세요.',
+                        value: /^\d{3}\d{3,4}\d{4}$/,
+                        message: '01000000000, 형식에 맞게 입력해주세요.',
                       }
                     })} />
                     <label htmlFor="floatingInputPhone" style={{padding: '0.5rem 0.75rem'}} >핸드폰 번호</label>

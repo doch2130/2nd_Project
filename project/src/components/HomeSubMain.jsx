@@ -35,7 +35,7 @@ export default function HomeSubMain() {
   ];
   return (
     <>
-    <Col xs={0} lg={3} style={{height: '100%', marginLeft: '64px'}} className="d-none d-md-block" >
+    <Col xs={0} lg={3} style={{height: '100%', marginLeft: '64px'}} className="d-none d-md-block HomeSubMainNone" >
       <div style={{textAlign: 'left', minWidth: '320px', maxWidth: '320px'}}>
         {/* 프로필 1줄 */}
         <Row>

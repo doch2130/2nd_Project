@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 import HomeSubMain from './HomeSubMain';
 import './Home.css';
 import HomePost from './HomePost';
+import NavbarSmall from './NavbarSmall';
 
 export default function Home() {
   const h100 = {
@@ -26,6 +27,7 @@ export default function Home() {
 
   return (
     <Container fluid style={h100}>
+    {/* // <Container fluid> */}
       <Row style={h100}>
         <Navbar />
         <Col xs={12} md={10} style={{marginTop: '50px'}}>
@@ -36,11 +38,13 @@ export default function Home() {
             <HomeSubMain />
 
             {/* 빈 값, Col 균형 맞추기 */}
-            <Col>
+            <Col className='HomeSubMainNone'>
               <span></span>
             </Col>
           </Row>
         </Col>
+        {/* 작은 화면에서는 Navbar Footer 고정 Fixed */}
+        <NavbarSmall />
       </Row>
     </Container>
   )

@@ -6,3 +6,9 @@
   content: '\00B7';
   margin: 0 0.25em 0 0.25em;
 }
+
+@media (max-width: 1150px) {
+  .HomeSubMainNone {
+    display: none !important;
+  }
+}
