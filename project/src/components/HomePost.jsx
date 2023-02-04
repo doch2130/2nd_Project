@@ -44,6 +44,7 @@ export default function HomePost() {
     }
     postDataInit();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function rendering() {
