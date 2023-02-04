@@ -47,7 +47,7 @@ const app = express();
 // app.use('/static', express.static(__dirname + '/public'));
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://115.85.183.140:3000'],
+    origin: ['http://localhost:3000', 'http://101.101.210.118:3000'],
     credentials: true,
   })
 );
