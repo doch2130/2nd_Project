@@ -14,16 +14,11 @@ export default function HomePost() {
     textAlign: 'center',
   }
 
-  // const commentTextarea = useRef();
-  const commentTextareaList = useRef([]);
-  const commentTextareaHeightAuto = (commentInputRef) => {
-    // console.log('commentInputRef', commentInputRef);
-    // console.log('commentInputRef.target', commentInputRef.target);
-    // console.log('commentInputRef.target.style.height', commentInputRef.target.style.height);
-    commentInputRef.target.style.height = 'auto';
-    commentInputRef.target.style.height = commentInputRef.target.scrollHeight + 'px';
-    // commentTextarea.current.style.height = 'auto';
-    // commentTextarea.current.style.height = commentTextarea.current.scrollHeight + 'px';
+  const commentTextarea = useRef();
+
+  const commentTextareaHeightAuto = () => {
+    commentTextarea.current.style.height = 'auto';
+    commentTextarea.current.style.height = commentTextarea.current.scrollHeight + 'px';
   }
 
   const dispatch = useDispatch();
@@ -34,24 +29,29 @@ export default function HomePost() {
     async function postDataInit() {
       const result = await axios.post('/post/data');
       // console.log(result.data[0]);
-      // result.data.map((el) => {
-      //   // console.log(el);
-      //   dispatch(postInit(el));
-      // });
-      for (let i = result.data.length-1; i >= 0; i--) {
-        dispatch(postInit(result.data[i]));
-      }
+      result.data.map((el) => {
+        // console.log(el);
+        dispatch(postInit(el));
+      });
     }
     postDataInit();
-
   }, []);
 
-  function rendering() {
-    console.log('render');
-    const result = [];
-    for (let i = postDataList.length-1; i >= 0; i--) {
-      result.push(
-      <div key={postDataList[i].number}>
+  return (
+    <>
+    <Col xs={12} lg={6} style={fullH_Mid} >
+      {/* <h2>Main Right Align</h2> */}
+      {/* <h3>991px 이하 Center Align</h3> */}
+      {/* 본문 Wrap */}
+      <Row className='HomeSubMainChange' style={{justifyContent: 'flex-end'}}>
+        <Col style={{padiing: '0px', minWidth: '470px', maxWidth: '470px'}}>
+          {/* 최상단 신규 소식? */}
+          <HomePostTop />
+          {/* 본문 */}
+          {/* 이미지, 아이디, 작성 경과시간 */}
+          {postDataList.map((el) => {
+            return (
+          <div key={el.number}>
           <Row style={{marginTop: '30px'}}>
             <Col style={{padding: '0px'}}>
               <Row style={{maxWidth: '470px', margin: '0px'}}>
@@ -66,15 +66,15 @@ export default function HomePost() {
                         <div>
                           <div>
                             {/* <span style={{fontWeight: '700'}}>raon</span> */}
-                            <span style={{fontWeight: '700'}}>{postDataList[i].id}</span>
+                            <span style={{fontWeight: '700'}}>{el.id}</span>
                             {/* <span style={{margin: '0 5px'}}>*</span> */}
                             <div style={{margin: '0px 5px 2px', border: '1px solid #777', borderRadius: '50px', width: '3px', height: '3px', display: 'inline-block'}}></div>
                             {/* <span style={{color: '#777'}}>7시간</span> */}
-                            <span style={{color: '#777'}}>{postDataList[i].date}</span>
+                            <span style={{color: '#777'}}>{el.date}</span>
                           </div>
                           {/* 광고는 없는 경우도 있음 */}
                           {/* <div>광고</div> */}
-                          <div>{postDataList[i].category}</div>
+                          <div>{el.category}</div>
                         </div>
                       </div>
                     </div>
@@ -91,7 +91,7 @@ export default function HomePost() {
             <Col style={{padding: '0px'}}>
               <div className='HomePostImg'>
                 {/* <img src='/images/HomeImg1.png' alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/> */}
-                <img src={postDataList[i].filename} alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/>
+                <img src={el.filename} alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/>
               </div>
             </Col>
           </Row>
@@ -129,8 +129,8 @@ export default function HomePost() {
                   본문 내용이 들어가야 합니다. 본문 내용이 들어가야 합니다.
                 </div> */}
                 <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
-                  <div style={{fontWeight: '700', display: 'inline'}}>{postDataList[i].id} </div>
-                  {postDataList[i].content}
+                  <div style={{fontWeight: '700', display: 'inline'}}>{el.id} </div>
+                  {el.content}
                 </div>
                 <div style={{cursor: 'pointer', color: '#777', minWidth: '46px'}}>더 보기</div>
                 <pre>
@@ -147,31 +147,13 @@ export default function HomePost() {
           {/* 댓글 입력 */}
           <Row style={{marginTop: '5px', marginBottom: '70px'}}>
             <Col style={{padding: '0px', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between'}}>
-              {/* <textarea ref={commentTextarea} className='commentTextarea' rows={1} placeholder='댓글 달기' onChange={() => commentTextareaHeightAuto()} /> */}
-              <textarea ref={(el) => (commentTextareaList.current[i] = el)} className='commentTextarea' rows={1} placeholder='댓글 달기' onChange={(i) => commentTextareaHeightAuto(i)} />
+              <textarea ref={commentTextarea} className='commentTextarea' rows={1} placeholder='댓글 달기' onChange={() => commentTextareaHeightAuto()} />
               <div style={{cursor: 'pointer', color: '#47afff', display: 'inline'}}>게시</div>
             </Col>
           </Row>
           </div>
-      );
-    }
-    return result;
-  }
-
-  return (
-    <>
-    <Col xs={12} lg={6} style={fullH_Mid} >
-      {/* <h2>Main Right Align</h2> */}
-      {/* <h3>991px 이하 Center Align</h3> */}
-      {/* 본문 Wrap */}
-      <Row className='HomeSubMainChange' style={{justifyContent: 'flex-end'}}>
-        <Col style={{padiing: '0px', minWidth: '470px', maxWidth: '470px'}}>
-          {/* 최상단 신규 소식? */}
-          <HomePostTop />
-          {/* 본문 */}
-          {/* 이미지, 아이디, 작성 경과시간 */}
-          {
-            rendering()
+          // {/* 본문 끝 */}
+            )})
           }
           
         </Col>

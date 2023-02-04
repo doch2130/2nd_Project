@@ -1,7 +1,6 @@
 // 초기 상태 설정
 const initState = {
-  list: [
-  ]
+  list: [],
 };
 
 // 테스트용 데이터 1개 고정
@@ -35,7 +34,7 @@ export function postAdd(payload) {
   return {
     type: POSTADD,
     payload,
-  }
+  };
 }
 
 // reducer
@@ -52,21 +51,22 @@ export default function postData(state = initState, action) {
           content: action.payload.content,
           filename: '/post/images/' + action.payload.filename,
           date: action.payload.date,
-          category: action.payload.category
+          category: action.payload.category,
         }),
       };
     case POSTADD:
       return {
         ...state,
         list: state.list.concat({
+          // list: state.list.unshift({
           number: action.payload.number,
           id: action.payload.id,
           content: action.payload.content,
           filename: '/post/images/' + action.payload.filename,
           date: action.payload.date,
-          category: action.payload.category
+          category: action.payload.category,
         }),
-      }
+      };
     default:
       return state;
   }
