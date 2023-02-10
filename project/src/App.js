@@ -12,6 +12,7 @@ import Loding from './components/Loding';
 // 이후 axios 요청 시 기본 url은 빼고 작성하면 된다.
 axios.defaults.baseURL = 'http://localhost:4000';
 // axios.defaults.baseURL = 'http://101.101.210.118:4000';
+// axios.defaults.baseURL = 'http://3.35.13.170:4000';
 // true로 설정해야 refreshToken cookie를 주고 받을 수 있다.
 axios.defaults.withCredentials = true;
 
