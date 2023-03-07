@@ -14,7 +14,7 @@ export default function Footer() {
             {footerList.map((el, index) => {
                 return (
                 <Col xs='auto' className='footer_col' key={index}>
-                    <a href={process.env.REACT_APP_BACK} rel="noreferrer">
+                    <a href={process.env.REACT_APP_FOOTER} rel="noreferrer">
                         <span>{el}</span>
                     </a>
                 </Col>
