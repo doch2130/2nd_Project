@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-// const randToken = require('rand-token');
+
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;
 
@@ -28,6 +28,7 @@ module.exports = {
           issuer: process.env.JWT_ISSUER,
           // 해싱 알고리즘
           algorithm: process.env.JWT_ALGORITHM,
+          // eslint-disable-next-line comma-dangle
         }
       ),
       refreshToken: jwt.sign(
@@ -47,6 +48,7 @@ module.exports = {
           issuer: process.env.JWT_ISSUER,
           // 해싱 알고리즘
           algorithm: process.env.JWT_ALGORITHM,
+          // eslint-disable-next-line comma-dangle
         }
       ),
     };
@@ -55,14 +57,15 @@ module.exports = {
 
   // 토큰 검증
   vertify: async (token, value) => {
-    let decodedToken;
-    let secret;
+    let decodedToken = null;
+    // let secret;
 
-    if (value === 'access') {
-      secret = process.env.ACCESS_TOKEN_SECRET;
-    } else if (value === 'refresh') {
-      secret = process.env.REFRESH_TOKEN_SECRET;
-    }
+    // eslint-disable-next-line operator-linebreak
+    const secret =
+      value === 'access'
+        ? process.env.ACCESS_TOKEN_SECRET
+        : process.env.REFRESH_TOKEN_SECRET;
+
     try {
       // decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
       decodedToken = jwt.verify(token, secret);
@@ -71,21 +74,16 @@ module.exports = {
       if (err.message === 'jwt expired') {
         console.log('expired token');
         return TOKEN_EXPIRED;
-      } else if (err.message === 'invalid token') {
-        console.log('invalid token');
-        return TOKEN_INVALID;
-      } else {
-        console.log('err', err);
-        return TOKEN_INVALID;
       }
+      console.log('err', err);
+      return TOKEN_INVALID;
     }
-
     return decodedToken;
   },
 
   getParsing: async (token) => {
-    const base64_payload = token.split('.')[1];
-    const payload = Buffer.from(base64_payload, 'base64');
+    const base64Payload = token.split('.')[1];
+    const payload = Buffer.from(base64Payload, 'base64');
     const result = JSON.parse(payload.toString());
     return result;
   },
@@ -109,6 +107,7 @@ module.exports = {
           issuer: process.env.JWT_ISSUER,
           // 해싱 알고리즘
           algorithm: process.env.JWT_ALGORITHM,
+          // eslint-disable-next-line comma-dangle
         }
       ),
     };

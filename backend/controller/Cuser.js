@@ -1,5 +1,7 @@
 const { Op } = require('sequelize');
-const { User, JWToken, SMSCertify } = require('../model/index');
+// redis 사용 안할 때는 SMSCertify를 사용해야한다.
+// const { User, JWToken, SMSCertify } = require('../model/index');
+const { User, JWToken } = require('../model/index');
 
 const { redisClient } = require('../redis/redis');
 const { sendVerificationSMS } = require('./naverSensUtill');

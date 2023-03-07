@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 const User = (Sequelize, DataTypes) => {
   return Sequelize.define(
     'user',
@@ -43,10 +44,12 @@ const User = (Sequelize, DataTypes) => {
       tableName: 'user',
       freezeTableName: true,
       timestamps: false,
+      // eslint-disable-next-line comma-dangle
     }
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 User.associate = (models) => {
   // Users안에 있는 "id값"을 "user_id라는 컬럼 이름"으로 LikeSing 새로운 컬럼으로 추가한다.
   // User.hasMany(models.LikeSing, {foreignKey: "user_id", sourceKey: 'id'});

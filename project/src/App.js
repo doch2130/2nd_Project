@@ -1,19 +1,16 @@
-import './App.css';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { success } from './store/modules/loginStatus';
 import CombineComponents from './components/CombineComponents';
-import Loding from './components/Loding';
+import Loding from './components/Loding/Loding';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // axios 기본 url 설정
 // 이후 axios 요청 시 기본 url은 빼고 작성하면 된다.
-// axios.defaults.baseURL = 'http://localhost:4000';
-axios.defaults.baseURL = 'http://101.101.210.118:4000';
-// axios.defaults.baseURL = 'http://3.35.13.170:4000';
-// true로 설정해야 refreshToken cookie를 주고 받을 수 있다.
+axios.defaults.baseURL = process.env.REACT_APP_BACK_AXIOS;
+// true로 설정해야 cookie를 주고 받을 수 있다.
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -29,7 +26,7 @@ function App() {
 
       if (result.data.msg === 'Not_Refresh_Cookie') {
         // value 변조되면 req.signedCookies(암호화된 쿠키)에서 값을 못불러와서 not found로 취급된다.
-        console.log('not cookie');
+        // console.log('not cookie');
         // navigate('/login');
       } else if (result.data.msg === 'login status success') {
         const { accessToken } = result.data;

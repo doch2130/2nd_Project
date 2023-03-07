@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { success } from '../store/modules/loginStatus';
 import { useEffect } from 'react';
-import Footer from './Footer';
+import Footer from './Footer/Footer';
 
 export default function Login() {
   const h100 = {

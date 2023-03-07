@@ -1,16 +1,11 @@
 import axios from 'axios';
-import React from 'react'
-import { useRef } from 'react';
+import React, { useRef } from 'react'
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import './HomeSubMain.css';
 import { postAdd } from '../store/modules/postData';
+import './HomeSubMain.css';
 
 export default function HomeSubMain() {
-  // const h100 = {
-  //   height: '100%',
-  // }
-
   const recomendData = [
     {
       id: 'sun',

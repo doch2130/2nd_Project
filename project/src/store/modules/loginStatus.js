@@ -59,20 +59,6 @@ export default function loginStatus(state = initState, action) {
         isLogin: false,
         id: '',
       };
-    // case DONE:
-    //   return {
-    //     ...state,
-    //     list: state.list.map((el) => {
-    //       if (el.id === action.id) {
-    //         return {
-    //           ...el,
-    //           done: true,
-    //         };
-    //       } else {
-    //         return el;
-    //       }
-    //     }),
-    //   };
     default:
       return state;
   }

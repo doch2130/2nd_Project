@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+// eslint-disable-next-line dot-notation
 const config = require('../config/config.json')['development'];
 
 const db = {};
@@ -7,6 +8,7 @@ const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
+  // eslint-disable-next-line comma-dangle
   config
 );
 

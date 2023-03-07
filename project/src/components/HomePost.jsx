@@ -14,30 +14,19 @@ export default function HomePost() {
     textAlign: 'center',
   }
 
-  // const commentTextarea = useRef();
   const commentTextareaList = useRef([]);
   const commentTextareaHeightAuto = (commentInputRef) => {
-    // console.log('commentInputRef', commentInputRef);
-    // console.log('commentInputRef.target', commentInputRef.target);
-    // console.log('commentInputRef.target.style.height', commentInputRef.target.style.height);
     commentInputRef.target.style.height = 'auto';
     commentInputRef.target.style.height = commentInputRef.target.scrollHeight + 'px';
-    // commentTextarea.current.style.height = 'auto';
-    // commentTextarea.current.style.height = commentTextarea.current.scrollHeight + 'px';
   }
 
   const dispatch = useDispatch();
   const postDataList = useSelector((state) => state.postData.list);
-  console.log(postDataList);
+  // console.log(postDataList);
 
   useEffect(() => {
     async function postDataInit() {
       const result = await axios.post('/post/data');
-      // console.log(result.data[0]);
-      // result.data.map((el) => {
-      //   // console.log(el);
-      //   dispatch(postInit(el));
-      // });
       for (let i = result.data.length-1; i >= 0; i--) {
         dispatch(postInit(result.data[i]));
       }
@@ -48,7 +37,7 @@ export default function HomePost() {
   }, []);
 
   function rendering() {
-    console.log('render');
+    // console.log('render');
     const result = [];
     for (let i = postDataList.length-1; i >= 0; i--) {
       result.push(
@@ -66,15 +55,10 @@ export default function HomePost() {
                       <div>
                         <div>
                           <div>
-                            {/* <span style={{fontWeight: '700'}}>raon</span> */}
                             <span style={{fontWeight: '700'}}>{postDataList[i].id}</span>
-                            {/* <span style={{margin: '0 5px'}}>*</span> */}
                             <div style={{margin: '0px 5px 2px', border: '1px solid #777', borderRadius: '50px', width: '3px', height: '3px', display: 'inline-block'}}></div>
-                            {/* <span style={{color: '#777'}}>7시간</span> */}
                             <span style={{color: '#777'}}>{postDataList[i].date}</span>
                           </div>
-                          {/* 광고는 없는 경우도 있음 */}
-                          {/* <div>광고</div> */}
                           <div>{postDataList[i].category}</div>
                         </div>
                       </div>
@@ -91,7 +75,6 @@ export default function HomePost() {
           <Row style={{marginTop: '10px'}}>
             <Col style={{padding: '0px'}}>
               <div className='HomePostImg'>
-                {/* <img src='/images/HomeImg1.png' alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/> */}
                 <img src={postDataList[i].filename} alt='images' style={{position: 'absolute', top: '0px', left: '0px', width: '100%', zIndex: '-1'}}/>
               </div>
             </Col>
@@ -125,13 +108,9 @@ export default function HomePost() {
           <Row style={{marginTop: '5px'}}>
             <Col style={{padding: '0px', textAlign: 'left'}}>
               <div style={{display: 'flex', fontSize: '0.85rem', maxWidth: '310px'}}>
-                {/* <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
-                  <div style={{fontWeight: '700', display: 'inline'}}>아이디 </div>
-                  본문 내용이 들어가야 합니다. 본문 내용이 들어가야 합니다.
-                </div> */}
                 <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                   <div style={{fontWeight: '700', display: 'inline'}}>{postDataList[i].id} </div>
-                  {postDataList[i].content}
+                    {postDataList[i].content}
                 </div>
                 <div style={{cursor: 'pointer', color: '#777', minWidth: '46px'}}>더 보기</div>
                 <pre>
@@ -148,8 +127,9 @@ export default function HomePost() {
           {/* 댓글 입력 */}
           <Row style={{marginTop: '5px', marginBottom: '70px'}}>
             <Col style={{padding: '0px', fontSize: '0.85rem', display: 'flex', justifyContent: 'space-between'}}>
-              {/* <textarea ref={commentTextarea} className='commentTextarea' rows={1} placeholder='댓글 달기' onChange={() => commentTextareaHeightAuto()} /> */}
-              <textarea ref={(el) => (commentTextareaList.current[i] = el)} className='commentTextarea' rows={1} placeholder='댓글 달기' onChange={(i) => commentTextareaHeightAuto(i)} />
+              <textarea ref={(el) => (commentTextareaList.current[i] = el)}
+              onChange={(i) => commentTextareaHeightAuto(i)}
+              className='commentTextarea' rows={1} placeholder='댓글 달기' />
               <div style={{cursor: 'pointer', color: '#47afff', display: 'inline'}}>게시</div>
             </Col>
           </Row>
@@ -162,7 +142,6 @@ export default function HomePost() {
   return (
     <>
     <Col xs={12} lg={6} style={fullH_Mid} >
-      {/* <h2>Main Right Align</h2> */}
       {/* <h3>991px 이하 Center Align</h3> */}
       {/* 본문 Wrap */}
       <Row className='HomeSubMainChange' style={{justifyContent: 'flex-end'}}>

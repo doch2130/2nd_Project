@@ -1,11 +1,10 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 import Login from './Login';
 import Register from './Register';
-import NotFound from './NotFound';
-import { useSelector } from 'react-redux';
-// import Test from './Test';
 import Home from './Home';
+import NotFound from './Error/NotFound';
 
 export default function CombineComponents() {
   const isLogin = useSelector((state) => state.loginStatus.isLogin);

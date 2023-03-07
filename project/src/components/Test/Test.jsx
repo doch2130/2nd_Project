@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate} from 'react-router-dom';
-import { logout, unRegister } from '../store/modules/loginStatus';
+import { logout, unRegister } from '../../store/modules/loginStatus';
 
 export default function Test() {
   const h100 = {

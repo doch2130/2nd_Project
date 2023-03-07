@@ -3,20 +3,6 @@ const initState = {
   list: [],
 };
 
-// 테스트용 데이터 1개 고정
-// const initState = {
-//   list: [
-//     {
-//       number: '0',
-//       id: 'power',
-//       content: 'asd',
-//       filename: '/post/images/HomeImg2.png',
-//       date: '2023-01-01',
-//       category: '',
-//     }
-//   ]
-// };
-
 // 액션 타입 정의하기
 const POSTINIT = 'post/init';
 const POSTADD = 'post/add';
@@ -40,7 +26,7 @@ export function postAdd(payload) {
 // reducer
 export default function postData(state = initState, action) {
   // 리듀서에서는 state를 반환해줘야 하는데 현재 console.log()를 반환해서 경고창이 나온것이다.
-  console.log(action.payload);
+  // console.log(action.payload);
   switch (action.type) {
     case POSTINIT:
       return {

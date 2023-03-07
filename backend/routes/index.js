@@ -26,6 +26,7 @@ router.post('/register/certification', controllerUser.registerCertification);
 // 회원가입 문자 인증 일치 검사
 router.post(
   '/register/certification/Check',
+  // eslint-disable-next-line comma-dangle
   controllerUser.registerCertificationCheck
 );
 

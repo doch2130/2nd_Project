@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 const CryptoJS = require('crypto-js');
 const axios = require('axios');
 const { sens } = require('../config/config');
@@ -7,15 +8,14 @@ function RandomNumber() {
   return Math.floor(Math.random() * (999999 - 100000)) + 100000;
 }
 
-// module.exports = {
-//   sendVerificationSMS: async (req, res) => {
 exports.sendVerificationSMS = (phone) => {
-  return new Promise( async (resolve, reject) => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
     try {
       // console.log('sms', phone);
       // SMS 수신할 연락처
       // 한국, 핸드폰 가능
-      // const tel = '010-9192-5745';
+      // const tel = '01012345678';
       const tel = phone;
       const userPhoneNumber = tel.split('-').join('');
       // 인증 코드 (랜덤 6자리 숫자)
@@ -50,6 +50,7 @@ exports.sendVerificationSMS = (phone) => {
 
       const hmac = CryptoJS.algo.HMAC.create(
         CryptoJS.algo.SHA256,
+        // eslint-disable-next-line comma-dangle
         sensSecretKey
       );
 
@@ -70,6 +71,7 @@ exports.sendVerificationSMS = (phone) => {
       // console.log(5);
 
       // sens 서버로 요청 전송
+      // eslint-disable-next-line no-unused-vars
       const smsRes = await axios({
         method,
         url,
@@ -93,6 +95,7 @@ exports.sendVerificationSMS = (phone) => {
     } catch (err) {
       console.log(err);
       // return res.status(404).json({ message: 'SMS not sent' });
+      // eslint-disable-next-line prefer-promise-reject-errors
       reject('SMS Error');
     }
   });

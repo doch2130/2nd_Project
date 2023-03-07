@@ -1,12 +1,10 @@
-import React from 'react';
-import { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { useEffect } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
-import Footer from './Footer';
+import Footer from './Footer/Footer';
 
 export default function Register() {
   const h100 = {

@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import rootReducer from './store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './store';
+// import reportWebVitals from './reportWebVitals';
+import './index.css';
 
 const store = configureStore({ reducer: rootReducer });
 
@@ -19,4 +19,5 @@ root.render(
   </Provider>
 );
 
-reportWebVitals();
+// 성능 측정할 때 사용하는 함수
+// reportWebVitals();

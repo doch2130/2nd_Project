@@ -3,32 +3,11 @@ const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-// eslint-disable-next-line import/no-extraneous-dependencies
-// const Redis = require('ioredis');
 const { redisClient } = require('./redis/redis');
-// const redis = require('redis');
-// const RedisStore = require('connect-redis')(session);
-
-// const jwt = require('jsonwebtoken');
 
 dotenv.config({
   path: './config/.env',
 });
-
-//* Redis 연결
-// redis[s]://[[username][:password]@][host][:port][/db-number]
-// const redisClient = redis.createClient({
-//   url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/1`,
-//   // 반드시 설정 !! 설정 안하면 connect-redis 동작 안함
-//   legacyMode: true,
-// });
-
-// const redis = new Redis({
-// const redisClient = new Redis({
-//   host: 'redis-10790.c14.us-east-1-3.ec2.cloud.redislabs.com',
-//   port: 10790,
-//   password: process.env.REDIS_PASSWORD,
-// });
 
 redisClient.on('connect', () => {
   console.info('Redis connected!');
@@ -38,29 +17,14 @@ redisClient.on('error', (err) => {
   console.error('Redis Client Error', err);
 });
 
-// console.log(redisClient);
-// redis v4 연결 (비동기)
-// redisClient.connect();
-// redisClient.quit();
-// .then(async () => {
-//   console.log('Redis Connected!');
-//   await redisCli.set('phh', '147258');
-//   const test = await redisCli.get('phh');
-//   console.log(test);
-// });
-// 기본 redisClient 객체는 콜백기반인데 v4버젼은 프로미스 기반이라 사용
-// const redisCli = redisClient.v4;
-
 const app = express();
 
-// app.set('view engine', 'ejs');
-// app.use('/static', express.static(__dirname + '/public'));
 app.use(
   cors({
     origin: [
-      'http://localhost:3000',
-      'http://101.101.210.118:3000',
-      'http://3.35.13.170:3000',
+      process.env.LOCAL_HOST,
+      process.env.NAVER_HOST,
+      process.env.AWS_HOST,
     ],
     credentials: true,
     // eslint-disable-next-line comma-dangle
@@ -68,15 +32,6 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// app.use(
-//   session({
-//     secret: '1234',
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// );
-
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 const sessionOption = {
@@ -88,18 +43,6 @@ const sessionOption = {
     secure: false,
   },
 };
-// const sessionOption = {
-//   resave: false,
-//   saveUninitialized: true,
-//   secret: process.env.COOKIE_SECRET,
-//   cookie: {
-//     httpOnly: true,
-//     secure: true,
-//     sameSite: 'none',
-//   },
-// };
-// app.set('trust proxy', 1);
-
 app.use(session(sessionOption));
 
 // redis 세션 시도
@@ -126,6 +69,16 @@ app.use('/', router);
 app.get('*', (req, res) => {
   res.status(404).send('주소가 존재하지 않습니다. 다시 한 번 확인해주세요.');
   // res.status(404).render('error/404');
+});
+
+// 에러 미들웨어 테스트 해보기
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.log('error middleware: ', err);
+  // res.status(500).render('error/500');
+  res
+    .status(500)
+    .send('서버에 일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.');
 });
 
 app.listen(process.env.PORT, () => {

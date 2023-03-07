@@ -1,7 +1,9 @@
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable arrow-body-style */
 const crypto = require('crypto');
-const { User } = require('../model/index');
-const { Op } = require('sequelize');
 const dotenv = require('dotenv');
+const { Op } = require('sequelize');
+const { User } = require('../model/index');
 
 dotenv.config({
   path: './config/.env',
@@ -50,6 +52,7 @@ exports.createRefreshToken = (userId) => {
 
 // 로그인을 위한 디코딩 작업
 exports.makePasswordHashed = (userId, plainPassword) => {
+  // eslint-disable-next-line consistent-return
   return new Promise(async (resolve, reject) => {
     // userId인자로 해당 유저 salt를 가져오는 부분
     const salt = await User.findOne({
@@ -62,6 +65,7 @@ exports.makePasswordHashed = (userId, plainPassword) => {
 
     // 일치하는 ID 없으면 notFound Return
     if (!salt) {
+      // eslint-disable-next-line no-promise-executor-return
       return resolve('notFound');
     }
 
