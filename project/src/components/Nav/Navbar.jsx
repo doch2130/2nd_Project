@@ -43,8 +43,8 @@ export default function Navbar() {
   return (
     <>
       <Col xs={0} md={2} style={{padding: '0px', borderRight: '1px solid #dbdbdb', maxWidth: '250px'}} className="d-none d-md-block">
-        <div style={{height: '100%', margin: 'auto', textAlign: 'left'}} >
-          <img src='/images/logo_text.png' alt='logo_text_img' style={{margin: '30px 0', width: '100%', maxWidth: '130px'}}/>
+        <div style={{height: '100%', margin: 'auto', textAlign: 'left', position: 'fixed', left: '0px', top: '0px'}} >
+          <img src='/images/logo_text.png' alt='logo_text_img' style={{margin: '30px 0 30px 5px', width: '100%', maxWidth: '130px'}}/>
           <Nav defaultActiveKey="/home" className="flex-column">
             <Nav.Link to="/home">홈</Nav.Link>
             <Nav.Link eventKey="link-1">검색</Nav.Link>
@@ -56,7 +56,7 @@ export default function Navbar() {
             <Nav.Link eventKey="link-7">프로필</Nav.Link>
           </Nav>
         </div>
-        <div style={{position: 'relative', bottom: '50px', width: '100%'}}>
+        <div style={{position: 'fixed', bottom: '50px', left: '10px'}}>
           <DropdownButton id="dropdown-item-button-up" drop='up' title='' style={{display: 'inline-block'}}>
             <Dropdown.Item as="button">설정</Dropdown.Item>
             <Dropdown.Divider />

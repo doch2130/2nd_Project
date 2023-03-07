@@ -189,6 +189,10 @@ export default function Register() {
     }
   }
 
+  const notAlreadyFunction = () => {
+    alert('준비중인 기능입니다.');
+  }
+
   return (
     <Container fluid style={h100}>
       <Row style={h100}>
@@ -199,7 +203,7 @@ export default function Register() {
                 <div>
                     <p style={{margin: '0 auto 1rem', width: '260px', color: '#777'}}>친구들의 사진과 동영상을 보려면 가입하세요.</p>
                 </div>
-                <Button style={{width: '260px'}}>Facebook으로 로그인</Button>
+                <Button style={{width: '260px'}} onClick={notAlreadyFunction}>Facebook으로 로그인</Button>
                 <br />
                 <Row style={{width: '260px', margin: 'auto', marginTop: '15px'}}>
                     <Col span={5} style={{border: '1px solid #777', height: '1px', position: 'relative', top: '10px'}}></Col>

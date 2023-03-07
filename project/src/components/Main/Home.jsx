@@ -3,11 +3,11 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate} from 'react-router-dom';
 import { useEffect } from 'react';
-import Navbar from './Nav/Navbar';
+import Navbar from '../Nav/Navbar';
 import HomeSubMain from './HomeSubMain';
-import './Home.css';
 import HomePost from './HomePost';
-import NavbarSmall from './Nav/NavbarSmall';
+import NavbarSmall from '../Nav/NavbarSmall';
+import './Home.css';
 
 export default function Home() {
   const h100 = {

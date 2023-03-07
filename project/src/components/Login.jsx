@@ -20,6 +20,7 @@ export default function Login() {
   const isLogin = useSelector((state) => state.loginStatus.isLogin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loginCookie = useRef();
 
   // 임시 방편, 로그인 상태인 경우 다시 리다이렉트
   useEffect(() => {
@@ -54,6 +55,7 @@ export default function Login() {
   }
 
   async function login() {
+    console.log('loginCookie', loginCookie.current.checked);
     // console.log(inputId.current.value);
     if(inputId.current.value.trim() === '') {
       inputId.current.focus();
@@ -66,6 +68,7 @@ export default function Login() {
     const response = await axios.post('/login', {
       id: inputId.current.value,
       pwd: inputPwd.current.value,
+      loginCookie: loginCookie.current.checked,
     });
 
     if(response.data.msg === true) {
@@ -85,6 +88,25 @@ export default function Login() {
       alert('정보가 일치하지 않습니다.');
       inputId.current.focus();
     }
+  }
+
+  useEffect(() => {
+    console.log('document.cookie', document.cookie);
+    console.log('document.cookie', document.cookie.match('loginid'));
+    console.log('document.cookie', document.cookie.indexOf('loginid'));
+    console.log('document.cookie', typeof document.cookie.indexOf('loginid'));
+    if(document.cookie.indexOf('loginid') === 0) {
+      loginCookie.current.checked = true;
+      inputId.current.value = document.cookie.slice(8);
+    } else {
+      loginCookie.current.checked = false;
+    }
+    // const getLoginCookie = document.cookie('loginid');
+    // console.log('getLoginCookie', getLoginCookie);
+  }, []);
+
+  const notAlreadyFunction = () => {
+    alert('준비중인 기능입니다.');
   }
 
   return (
@@ -111,7 +133,7 @@ export default function Login() {
               </div>
             </div>
             <div style={{width: '260px', textAlign: 'left', margin: 'auto', marginBottom: '10px'}}>
-              <input type='checkbox' name='loginCookie' id='loginCookie' value='true' />
+              <input ref={loginCookie} type='checkbox' name='loginCookie' id='loginCookie' value='true' />
               <label htmlFor='loginCookie' style={{marginLeft: '5px'}}>로그인 정보 저장하기</label>
             </div>
             <Button onClick={() => login()} style={{width: '260px'}}>로그인</Button>
@@ -123,12 +145,12 @@ export default function Login() {
             </Row>
             <div style={{marginTop: '20px'}}>
               <p style={{cursor: 'pointer', maxWidth: '260px', margin: '0 auto 1rem'}}>
-                <img src='/images/logo_facebook.png' alt='Facebook Logo' style={{width: '20px', height: '20px', marginRight: '5px'}} />
-                <span style={{color: '#385185', fontWeight: '700', fontSize: '0.95rem'}}>Facebook으로 로그인</span>
+                <img src='/images/logo_facebook.png' alt='Facebook Logo' style={{width: '20px', height: '20px', marginRight: '5px'}} onClick={notAlreadyFunction} />
+                <span style={{color: '#385185', fontWeight: '700', fontSize: '0.95rem'}} onClick={notAlreadyFunction}>Facebook으로 로그인</span>
               </p>
             </div>
             <div style={{marginBottom: '20px'}}>
-              <span style={{color: '#385185', cursor: 'pointer', fontSize: '0.75rem'}}>비밀번호를 잊으셨나요?</span>
+              <span style={{color: '#385185', cursor: 'pointer', fontSize: '0.75rem'}} onClick={notAlreadyFunction}>비밀번호를 잊으셨나요?</span>
             </div>
           </form>
           

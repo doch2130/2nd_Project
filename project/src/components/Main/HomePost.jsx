@@ -1,11 +1,10 @@
 import axios from 'axios';
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { postInit } from '../../store/modules/postData';
 import HomePostTop from './HomePostTop';
 import './HomePost.css';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { postInit } from '../store/modules/postData';
 
 export default function HomePost() {
   const fullH_Mid = {

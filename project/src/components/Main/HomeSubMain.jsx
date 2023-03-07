@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useRef } from 'react'
 import { Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { postAdd } from '../store/modules/postData';
+import { postAdd } from '../../store/modules/postData';
 import './HomeSubMain.css';
 
 export default function HomeSubMain() {
