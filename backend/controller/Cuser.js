@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const { User, JWToken, SMSCertify } = require('../model/index');
 
-// const { redisClient } = require('../redis/redis');
+const { redisClient } = require('../redis/redis');
 const { sendVerificationSMS } = require('./naverSensUtill');
 const hash = require('./hash');
 const jwt = require('./jwt');
@@ -13,21 +13,14 @@ const cookieOption = {
   signed: true,
 };
 
-// const cookieOption = {
-//   httpOnly: true,
-//   secure: true,
-//   maxAge: 1000 * 60 * 60 * 24 * 14,
-//   signed: true,
-//   sameSite: 'none',
-//   // 배포 시 주석 해제
-//   // domain: 'http://115.85.183.140:3000'
-// };
-
 // v4 버전부터 Promise 기능이 기본이라고 설명서에는 나와있지만
 // 현재 Node Project에서는 기능이 Promise 기능이 안된다.
 // ps. redisCli.v4.set 방식으로 사용해야 v4 버전에 해당한다.
 // ps2. redisCli = .v4로 적용했는데도 안되는걸로 봐서는 안되는 것 같다.
 // const redisCli = redisClient.v4;
+const redisCli = redisClient;
+
+// console.log('redisCli', redisClient.v4);
 
 // 회원탈퇴
 exports.unRegister = async (req, res) => {
@@ -75,54 +68,70 @@ exports.logout = async (req, res) => {
 exports.registerCertification = async (req, res) => {
   // console.log('req.body.phone', req.body.phone);
 
-  const resultPhone = await User.findOne({
-    where: { phone: req.body.phone },
-  });
+  // const resultPhone = await User.findOne({
+  //   where: { phone: req.body.phone },
+  // });
 
-  if (resultPhone) {
-    res.send('already_join_phone');
-  } else {
-    const vertificationCode = await sendVerificationSMS(req.body.phone);
+  // if (resultPhone) {
+  //   res.send('already_join_phone');
+  // } else {
+  const vertificationCode = await sendVerificationSMS(req.body.phone);
 
-    const existResult = await SMSCertify.findOne({
-      where: {
-        phone: req.body.phone,
-      },
-    });
+  // console.log('vertificationCode', typeof String(vertificationCode));
+  console.log('req.body.phone', req.body.phone);
 
-    if (existResult) {
-      await SMSCertify.destroy({
-        where: {
-          phone: req.body.phone,
-        },
-      });
-    }
+  // const existResult = await SMSCertify.findOne({
+  //   where: {
+  //     phone: req.body.phone,
+  //   },
+  // });
 
-    const data = {
-      phone: req.body.phone,
-      smscode: vertificationCode,
-    };
-    await SMSCertify.create(data);
-    // redisCli.set(req.body.phone, vertificationCode);
-    // redisCli.expire(req.body.phone, 300);
+  // if (existResult) {
+  //   await SMSCertify.destroy({
+  //     where: {
+  //       phone: req.body.phone,
+  //     },
+  //   });
+  // }
 
-    res.send(true);
+  // const data = {
+  //   phone: req.body.phone,
+  //   smscode: vertificationCode,
+  // };
+  // await SMSCertify.create(data);
+
+  try {
+    redisCli.set(req.body.phone, vertificationCode);
+    // redisCli.set('01091925745', '123458');
+    redisCli.expire(req.body.phone, 300);
+  } catch (err) {
+    console.log('err', err);
   }
+
+  res.send(true);
+  // }
 };
 
 // 문자인증 검증
 exports.registerCertificationCheck = async (req, res) => {
-  const result = await SMSCertify.findOne({
-    where: {
-      phone: req.body.phone,
-    },
-  });
-  res.send(result);
-  // redisCli.get(req.body.phone, (err, result) => {
-  //   if (err) throw err;
-
-  //   res.send(result);
+  // const result = await SMSCertify.findOne({
+  //   where: {
+  //     phone: req.body.phone,
+  //   },
   // });
+  // res.send(result);
+
+  try {
+    redisCli.get(req.body.phone, (err, result) => {
+      if (err) throw err;
+
+      console.log('result', result);
+      console.log('result', typeof result);
+      res.send(result);
+    });
+  } catch (err) {
+    console.log('err', err);
+  }
 };
 
 // 회원가입 기능

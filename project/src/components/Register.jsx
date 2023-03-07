@@ -134,12 +134,12 @@ export default function Register() {
       phone: getValues('phone')
     });
 
-    // console.log('인증번호 일치 결과', response);
+    console.log('인증번호 일치 결과', response);
 
     if (count <= 0) {
       alert('인증번호가 만료되었습니다. 다시 요청해주세요.');
-    // } else if(String(response.data) === certifiResult.current.value) {
-    } else if(response.data.smscode === certifiResult.current.value) {
+    } else if(String(response.data) === certifiResult.current.value) {
+    // } else if(response.data.smscode === certifiResult.current.value) {
       alert('인증번호가 일치합니다.');
       // 성공하면 인터벌 초기화 및 false
       setIsStart( false );

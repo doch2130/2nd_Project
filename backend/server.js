@@ -1,11 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-// const { redisClient } = require('./redis/redis');
+// eslint-disable-next-line import/no-extraneous-dependencies
+// const Redis = require('ioredis');
+const { redisClient } = require('./redis/redis');
 // const redis = require('redis');
 // const RedisStore = require('connect-redis')(session);
-const cookieParser = require('cookie-parser');
+
 // const jwt = require('jsonwebtoken');
 
 dotenv.config({
@@ -15,18 +18,25 @@ dotenv.config({
 //* Redis 연결
 // redis[s]://[[username][:password]@][host][:port][/db-number]
 // const redisClient = redis.createClient({
-//   url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/0`,
-// // 반드시 설정 !! 설정 안하면 connect-redis 동작 안함
+//   url: `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}/1`,
+//   // 반드시 설정 !! 설정 안하면 connect-redis 동작 안함
 //   legacyMode: true,
 // });
 
-// redisClient.on('connect', () => {
-//   console.info('Redis connected!');
+// const redis = new Redis({
+// const redisClient = new Redis({
+//   host: 'redis-10790.c14.us-east-1-3.ec2.cloud.redislabs.com',
+//   port: 10790,
+//   password: process.env.REDIS_PASSWORD,
 // });
 
-// redisClient.on('error', (err) => {
-//   console.error('Redis Client Error', err);
-// });
+redisClient.on('connect', () => {
+  console.info('Redis connected!');
+});
+
+redisClient.on('error', (err) => {
+  console.error('Redis Client Error', err);
+});
 
 // console.log(redisClient);
 // redis v4 연결 (비동기)
