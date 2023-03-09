@@ -1,8 +1,5 @@
-// const { JWToken } = require('../model/index');
-const { redisClient } = require('../redis/redis');
-const jwt = require('./jwt');
-
-const redisCli = redisClient;
+const { JWToken } = require('../../model/index');
+const jwt = require('../jwt');
 
 exports.loginStatus = async (req, res, next) => {
   try {
@@ -20,12 +17,11 @@ exports.loginStatus = async (req, res, next) => {
       return;
     }
 
-    const token = await redisCli.get(jsid);
-    // const token = await JWToken.findOne({
-    //   where: {
-    //     jwtid: jsid,
-    //   },
-    // });
+    const token = await JWToken.findOne({
+      where: {
+        jwtid: jsid,
+      },
+    });
 
     // console.log('test', token.refresh);
 
@@ -36,18 +32,16 @@ exports.loginStatus = async (req, res, next) => {
       return;
     }
 
-    // const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
-    const refreshTokenAuth = await jwt.vertify(token, 'refresh');
+    const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
     // console.log(refreshTokenAuth.id);
 
     if (!refreshTokenAuth.id) {
       console.log('Refresh_Token_Expired');
-      await redisCli.unlink(jsid);
-      // await JWToken.destroy({
-      //   where: {
-      //     jwtid: jsid,
-      //   },
-      // });
+      await JWToken.destroy({
+        where: {
+          jwtid: jsid,
+        },
+      });
       res.clearCookie('jsid');
       res.send({ msg: 'Refresh_Die' });
       return;

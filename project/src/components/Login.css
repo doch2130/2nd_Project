@@ -1,0 +1,120 @@
+.loginForm {
+  max-width: 450px;
+  margin: auto;
+  border: 1px solid black;
+}
+
+.loginForm-logo {
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.loginForm-inputWrap {
+  max-width: 260px;
+  margin: auto auto 10px;
+  height: 40px;
+}
+
+#floatingInputID,
+#floatingInputPW {
+  height: 40px;
+  padding: 0.7rem 0.75rem 0px;
+}
+
+.loginForm-label {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.showPwdButton {
+  padding: 0px;
+  background-color: white;
+  border: none;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+}
+
+.loginForm-cookie {
+  width: 260px;
+  text-align: left;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.loginForm-cookie > label {
+  margin-left: 5px;
+}
+
+.loginForm-line {
+  width: 260px;
+  margin: auto;
+  margin-top: 15px;
+}
+
+.loginForm-line > :nth-child(2n-1) {
+  border: 1px solid #777;
+  height: 1px;
+  position: relative;
+  top: 10px;
+}
+
+.loginForm-line > :nth-child(2) {
+  padding: 0px;
+  color: #777;
+}
+
+.loginForm-FaceBookWrap {
+  margin-top: 20px;
+}
+
+.loginForm-FaceBookWrap > p {
+  cursor: pointer;
+  max-width: 260px;
+  margin: 0 auto 1rem;
+}
+
+.loginForm-FaceBookWrap > p > img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.loginForm-FaceBookWrap > p > span {
+  color: #385185;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.loginForm-PasswordFind {
+  margin-bottom: 20px;
+}
+
+.loginForm-PasswordFind > span {
+  color: #385185;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.loginForm-Register {
+  max-width: 450px;
+  margin: auto;
+  border: 1px solid black;
+  margin-top: 15px;
+  height: 60px;
+}
+
+.loginForm-Register > div {
+  display: flex;
+  height: 100%;
+}
+
+.loginForm-Register > div > p {
+  margin: auto;
+}
+
+.loginForm-Register > div > p > a {
+  text-decoration: none;
+  font-weight: 700;
+}

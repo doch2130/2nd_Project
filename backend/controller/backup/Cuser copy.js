@@ -1,9 +1,10 @@
 const { Op } = require('sequelize');
-const { User } = require('../model/index');
-const { redisClient } = require('../redis/redis');
-const { sendVerificationSMS } = require('./naverSensUtill');
-const hash = require('./hash');
-const jwt = require('./jwt');
+const { User, JWToken } = require('../../model/index');
+
+const { redisClient } = require('../../redis/redis');
+const { sendVerificationSMS } = require('../naverSensUtill');
+const hash = require('../hash');
+const jwt = require('../jwt');
 
 // v4 버전부터 Promise 기능이 기본이라고 설명서에는 나와있지만
 // 현재 Node Project에서는 기능이 Promise 기능이 안된다.
@@ -20,17 +21,12 @@ exports.unRegister = async (req, res, next) => {
     const refreshTokenId = req.signedCookies.jsid;
 
     if (refreshTokenId) {
-      // del, unlink 둘다 삭제 명령어, unlink v4 부터 사용 가능, 속도는 월등 함
-      redisCli.unlink(refreshTokenId);
+      await JWToken.destroy({
+        where: {
+          jwtid: refreshTokenId,
+        },
+      });
     }
-
-    // if (refreshTokenId) {
-    //   await JWToken.destroy({
-    //     where: {
-    //       jwtid: refreshTokenId,
-    //     },
-    //   });
-    // }
 
     const result = await User.destroy({
       where: {
@@ -55,16 +51,12 @@ exports.logout = async (req, res, next) => {
     const refreshTokenId = req.signedCookies.jsid;
 
     if (refreshTokenId) {
-      redisCli.unlink(refreshTokenId);
+      await JWToken.destroy({
+        where: {
+          jwtid: refreshTokenId,
+        },
+      });
     }
-
-    // if (refreshTokenId) {
-    //   await JWToken.destroy({
-    //     where: {
-    //       jwtid: refreshTokenId,
-    //     },
-    //   });
-    // }
 
     res.clearCookie('jsid');
     res.send(true);
@@ -188,14 +180,11 @@ exports.login = async (req, res, next) => {
         // console.log('jwtid', jwtid);
         // console.log('refresh', jwtToken);
 
-        await redisCli.set(jwtid, jwtToken.refreshToken);
-        redisCli.expire(jwtid, 60 * 60 * 24 * 14);
-
         // jwtid, refreshToken DB에 저장
-        // await JWToken.create({
-        //   jwtid,
-        //   refresh: jwtToken.refreshToken,
-        // });
+        await JWToken.create({
+          jwtid,
+          refresh: jwtToken.refreshToken,
+        });
 
         // 로그인 정보 저장 쿠키를 전달
         if (req.body.loginCookie) {
@@ -231,27 +220,24 @@ exports.login = async (req, res, next) => {
 };
 
 async function refreshTokenCheck(refreshTokenId) {
-  const token = await redisCli.get(refreshTokenId);
-  // const token = await JWToken.findOne({
-  //   where: {
-  //     jwtid: refreshTokenId,
-  //   },
-  // });
+  const token = await JWToken.findOne({
+    where: {
+      jwtid: refreshTokenId,
+    },
+  });
 
   console.log('refreshTokenCheck', token);
 
-  // const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
-  const refreshTokenAuth = await jwt.vertify(token, 'refresh');
+  const refreshTokenAuth = await jwt.vertify(token.refresh, 'refresh');
   console.log(refreshTokenAuth);
 
   if (!refreshTokenAuth.id) {
     console.log('Refresh_Token_Expired');
-    await redisCli.unlink(refreshTokenId);
-    // await JWToken.destroy({
-    //   where: {
-    //     jwtid: refreshTokenId,
-    //   },
-    // });
+    await JWToken.destroy({
+      where: {
+        jwtid: refreshTokenId,
+      },
+    });
     return { msg: 'Refresh Expired' };
   }
 
