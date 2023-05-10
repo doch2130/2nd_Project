@@ -79,7 +79,6 @@ exports.registerCertification = async (req, res, next) => {
     const vertificationCode = await sendVerificationSMS(req.body.phone);
     console.log('req.body.phone', req.body.phone);
     redisCli.set(req.body.phone, vertificationCode);
-    // redisCli.set('01091925745', '123458');
     redisCli.expire(req.body.phone, 300);
     res.send(true);
   } catch (err) {
