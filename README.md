@@ -13,7 +13,7 @@ This is an Instagram clone coding to practice how to use React and to try out va
 |Login Page|1. 아이디, 이메일, 핸드폰 번호를 이용하여 로그인 가능.|
 |SignUp Page|1. 아이디, 이메일, 핸드폰 번호 중복 검사.<br>2. React-Hook-Form을 이용한 유효성 검사.<br>3. 핸드폰 번호를 이용한 SMS 인증 기능.|
 |Post Page|1. 게시글 등록 기능.<br>2. 로그아웃 기능.<br>3. 반응형 페이지|
-|JWT Token|1. 로그인 성공 시 Token 발급.<br>2. Token은 Redis에 저장 후 사용.<br>3. 로그아웃 시 Token 삭제.|
+|JWT Token|1. 로그인 성공 시 Token 발급.<br>2. Token은 Redis에 저장 후 사용.<br>3. 로그아웃 시 Token 삭제.<br>4. Access Token, Refresh Token 분리 사용.<br>5. 기본 Access Token 인증, 만료 시 Refresh Token 인증 후 Access Token 재발급.<br>6. Refresh Token 만료 시 로그아웃.|
 |Naver SMS API|1. 핸드폰 번호 SMS 인증 시 API 호출.<br>2. Redis DB에 임시 Code 저장.<br>3. 검증 시 Redis DB 데이터와 비교.|
 
 <h3> 3. 프로젝트 기간 (Project Work) </h3>
