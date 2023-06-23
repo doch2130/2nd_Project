@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import Footer from './Footer/Footer';
+import styled from 'styled-components';
 
 export default function Register() {
   const h100 = {
@@ -14,6 +15,11 @@ export default function Register() {
     margin: 'auto',
     textAlign: 'center'
   }
+  const NoneAfterLabel = styled.label`
+  &::after {
+      content: none !important;
+    }
+  `;
 
   const navigate = useNavigate();
 
@@ -212,7 +218,7 @@ export default function Register() {
                 </Row>
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
                     {/* <input type="text" name='id' className="form-control" id="floatingInputId" placeholder="아이디" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} /> */}
-                    <input type="text" name='id' className="form-control" id="floatingInputId" placeholder="아이디" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} maxLength='10'
+                    <input type="text" name='id' className="form-control" id="floatingInputId" placeholder="아이디" style={{height: '40px', padding: '0.7rem 0.75rem 0', minHeight: 'auto'}} maxLength='10'
                     {...register('id', {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
@@ -220,7 +226,8 @@ export default function Register() {
                         message: '5~10 글자의 소문자, 숫자로 입력해주세요.',
                       }
                     })} />
-                    <label htmlFor="floatingInputId" style={{padding: '0.5rem 0.75rem'}} >아이디</label>
+                    {/* <label htmlFor="floatingInputId" style={{padding: '0.5rem 0.75rem'}} >아이디</label> */}
+                    <NoneAfterLabel htmlFor="floatingInputId" style={{padding: '0.5rem 0.75rem'}} >아이디</NoneAfterLabel>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.id && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.id.message}</small>}
@@ -228,7 +235,7 @@ export default function Register() {
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}} >
                     {/* <input type="email" className="form-control is-invalid" id="floatingInput" placeholder="name@example.com" /> */}
-                    <input type="text" name='name' className="form-control" id="floatingInputName" placeholder="사용자 이름" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} maxLength='10'
+                    <input type="text" name='name' className="form-control" id="floatingInputName" placeholder="사용자 이름" style={{height: '40px', padding: '0.7rem 0.75rem 0', minHeight: 'auto'}} maxLength='10'
                     {...register('name', {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
@@ -236,14 +243,15 @@ export default function Register() {
                         message: '2~10 글자로 입력해주세요.',
                       }
                     })} />
-                    <label htmlFor="floatingInputName" style={{padding: '0.5rem 0.75rem'}}>사용자 이름</label>
+                    {/* <label htmlFor="floatingInputName" style={{padding: '0.5rem 0.75rem'}}>사용자 이름</label> */}
+                    <NoneAfterLabel htmlFor="floatingInputName" style={{padding: '0.5rem 0.75rem'}}>사용자 이름</NoneAfterLabel>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.name && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.name.message}</small>}
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
-                    <input type={showPwd ? "text" : "password"} name='pwd' className="form-control" id="floatingInputPassword" placeholder="비밀번호" ref={inputPwd} style={{height: '40px', padding: '0.7rem 0.75rem 0'}} maxLength='20'
+                    <input type={showPwd ? "text" : "password"} name='pwd' className="form-control" id="floatingInputPassword" placeholder="비밀번호" ref={inputPwd} style={{height: '40px', padding: '0.7rem 0.75rem 0', minHeight: 'auto'}} maxLength='20'
                     {...register('pwd', {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
@@ -252,8 +260,8 @@ export default function Register() {
                       }
                     })} 
                     />
-                    <label htmlFor="floatingInputPassword" style={{padding: '0.5rem 0.75rem'}} >비밀번호</label>
-                    {/* <div style={showPwdDiv ? {display: 'inline'} : {display: 'none'}}> */}
+                    {/* <label htmlFor="floatingInputPassword" style={{padding: '0.5rem 0.75rem'}} >비밀번호</label> */}
+                    <NoneAfterLabel htmlFor="floatingInputPassword" style={{padding: '0.5rem 0.75rem'}} >비밀번호</NoneAfterLabel>
                     <div style={getValues('pwd') ? {display: 'inline'} : {display: 'none'}}>
                         <button type='button' onClick={() => toggleShowPwd()} style={{padding: '0px', backgroundColor: 'white', border: 'none', position: 'absolute', top: '0.5rem', right: '0.75rem'}} >{showPwd ? "숨기기" : "표시"}</button>
                     </div>
@@ -263,7 +271,7 @@ export default function Register() {
                 </div>
 
                 <div className="form-floating" style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
-                    <input type="email" name='email' className="form-control" id="floatingInputEmail" placeholder="name@example.com" style={{height: '40px', padding: '0.7rem 0.75rem 0'}} maxLength='100'
+                    <input type="email" name='email' className="form-control" id="floatingInputEmail" placeholder="name@example.com" style={{height: '40px', padding: '0.7rem 0.75rem 0', minHeight: 'auto'}} maxLength='100'
                     {...register('email', {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
@@ -272,14 +280,15 @@ export default function Register() {
                         message: 'exam@exam.com, 형식에 맞게 입력해주세요.',
                       }
                     })} />
-                    <label htmlFor="floatingInputEmail" style={{padding: '0.5rem 0.75rem'}} >이메일 주소</label>
+                    {/* <label htmlFor="floatingInputEmail" style={{padding: '0.5rem 0.75rem'}} >이메일 주소</label> */}
+                    <NoneAfterLabel htmlFor="floatingInputEmail" style={{padding: '0.5rem 0.75rem'}} >이메일 주소</NoneAfterLabel>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
                   {errors.email && <small role="alert" style={{color: 'red', fontWeight: '700', fontSize: '0.8rem'}}>{errors.email.message}</small>}
                 </div>
 
                 <div className="form-floating" ref={phoneDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
-                    <input type="tel" name='phone' className="form-control" id="floatingInputPhone" placeholder="01000000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='12'
+                    <input type="tel" name='phone' className="form-control" id="floatingInputPhone" placeholder="01000000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline', minHeight: 'auto'}} maxLength='12'
                     {...register('phone', {
                       required: '필수 작성 칸 입니다.',
                       pattern: {
@@ -287,7 +296,8 @@ export default function Register() {
                         message: '01000000000, 형식에 맞게 입력해주세요.',
                       }
                     })} />
-                    <label htmlFor="floatingInputPhone" style={{padding: '0.5rem 0.75rem'}} >핸드폰 번호</label>
+                    {/* <label htmlFor="floatingInputPhone" style={{padding: '0.5rem 0.75rem'}} >핸드폰 번호</label> */}
+                    <NoneAfterLabel htmlFor="floatingInputPhone" style={{padding: '0.5rem 0.75rem'}} >핸드폰 번호</NoneAfterLabel>
                     <Button onClick={() => phoneCertifiRequest()} style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}}>요청</Button>
                 </div>
                 <div style={{height: '20px', marginBottom: '5px'}}>
@@ -295,8 +305,9 @@ export default function Register() {
                 </div>
 
                 <div className="form-floating" ref={phoneCertifiDiv} style={{maxWidth: '260px', margin: 'auto', height: '40px'}}>
-                    <input ref={certifiResult} disabled={!isStart && !isReStart} type="text" name='phoneCertifi' className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline'}} maxLength='10' />
-                    <label htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}} >인증번호</label>
+                    <input ref={certifiResult} disabled={!isStart && !isReStart} type="text" name='phoneCertifi' className="form-control" id="floatingInputCertifiNum" placeholder="000000" style={{height: '40px', padding: '0.7rem 0.75rem 0', width: '80%', display: 'inline', minHeight: 'auto'}} maxLength='10' />
+                    {/* <label htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}} >인증번호</label> */}
+                    <NoneAfterLabel htmlFor="floatingInputCertifiNum" style={{padding: '0.5rem 0.75rem'}} >인증번호</NoneAfterLabel>
                     {/* disalbed 를 ||로 하면 onclick 이벤트가 실행이 안되고, &&로 하면 실행이 된다.
                     그리고 &&로 해도 || 랑 동일한 결과가 나온다. 왜인지 이해가 안간다....*/}
                     <Button disabled={!isStart && !isReStart} onClick={() => phoneCertifiResult()} style={{width: '18%', height: '40px', position: 'relative', top: '-8px', fontSize: '0.8rem', padding: '0px', marginLeft: '5px'}} >인증</Button>

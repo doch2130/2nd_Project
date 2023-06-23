@@ -20,11 +20,16 @@
 #floatingInputPW {
   height: 40px;
   padding: 0.7rem 0.75rem 0px;
+  min-height: auto;
 }
 
 .loginForm-label {
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem !important;
   font-size: 0.8rem;
+}
+
+.loginForm-label::after {
+  content: none !important;
 }
 
 .showPwdButton {
@@ -48,9 +53,8 @@
 }
 
 .loginForm-line {
-  width: 260px;
-  margin: auto;
-  margin-top: 15px;
+  width: 260px;;
+  margin: 15px auto auto!important;
 }
 
 .loginForm-line > :nth-child(2n-1) {

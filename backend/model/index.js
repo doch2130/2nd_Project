@@ -17,10 +17,10 @@ db.Sequelize = Sequelize;
 
 // User 테이블
 db.User = require('./User')(sequelize, Sequelize);
-// JwToken 테이블
-db.JWToken = require('./JwToken')(sequelize, Sequelize);
-// SMS 인증 테이블
-db.SMSCertify = require('./SmsCertify')(sequelize, Sequelize);
+// JwToken 테이블 => Redis 변경
+// db.JWToken = require('./JwToken')(sequelize, Sequelize);
+// SMS 인증 테이블 => Redis 변경
+// db.SMSCertify = require('./SmsCertify')(sequelize, Sequelize);
 // Post 테이블
 db.PostList = require('./PostList')(sequelize, Sequelize);
 
