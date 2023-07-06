@@ -1,3 +1,6 @@
+# START
+npm start
+
 # SETTING
 
 # backend/config/.env.js
