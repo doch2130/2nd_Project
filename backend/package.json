@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index2.js"
+    "start": "nodemon index2.js",
+    "production": "node index2.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "express-session": "^1.17.3",
     "ioredis": "^5.3.1",
     "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^3.1.0",
     "redis": "^4.6.4",
     "sequelize": "^6.28.0",

@@ -1,8 +1,22 @@
 import React from 'react'
 import { Col, Nav } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { modalOpen } from '../../store/modules/modal';
+import PostMake from '../PostMake';
 import navSmallClass from './NavbarSmall.module.css';
 
 export default function NavbarSmall() {
+  const dispatch = useDispatch();
+
+  const postMakeFunction = () => {
+    const payload = {
+      backDrop: false,
+      size: 'md',
+      // content: 'test',
+      content: <PostMake />,
+    }
+    dispatch(modalOpen(payload));
+  }
   return (
     <>
     {/* 작은 화면에서는 Navbar Footer 고정 Fixed */}
@@ -34,7 +48,7 @@ export default function NavbarSmall() {
             </svg>
           </div>
         </Nav.Link>
-        <Nav.Link eventKey="link-3">
+        <Nav.Link eventKey="link-3" onClick={postMakeFunction}>
           <div>
             <svg aria-label="새로운 게시물" color="rgb(36, 24, 24)" fill="rgb(38, 38, 38)" height="24" role="img" viewBox="0 0 24 24" width="24">
               <path d="M2 12v3.45c0 2.849.698 4.005 1.606 4.944.94.909 2.098 1.608 4.946 1.608h6.896c2.848 0 4.006-.7 4.946-1.608C21.302 19.455 22 18.3 22 15.45V8.552c0-2.849-.698-4.006-1.606-4.945C19.454 2.7 18.296 2 15.448 2H8.552c-2.848 0-4.006.699-4.946 1.607C2.698 4.547 2 5.703 2 8.552Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>

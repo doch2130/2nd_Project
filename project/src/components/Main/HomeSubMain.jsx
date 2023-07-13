@@ -33,28 +33,6 @@ export default function HomeSubMain() {
     '소개', '도움말', '홍보 센터', 'API', '채용 정보', '개인정보처리방침', '약관', '위치', '언어'
   ];
 
-  const postAddForm = useRef();
-  const isLogin = useSelector((state) => state.loginStatus.isLogin);
-  const userID = useSelector((state) => state.loginStatus.id);
-  const dispatch = useDispatch();
-
-  async function testAdd() {
-    console.log('isLogin', isLogin);
-    console.log('userID', userID);
-    console.log('postAddForm.current.content.value', postAddForm.current.content.value);
-
-    const result = await axios.post('/post/data/add', {
-      id: userID,
-      content: postAddForm.current.content.value,
-      filename: postAddForm.current.filename.value,
-      category: postAddForm.current.category.value,
-    });
-    console.log('result', result);
-
-    dispatch(postAdd(result.data));
-
-  }
-
   return (
     <>
     <Col xs={0} lg={3} style={{height: '100%', marginLeft: '64px'}} className="d-none d-md-block HomeSubMainNone" >
@@ -119,16 +97,6 @@ export default function HomeSubMain() {
             </ul>
             <br />
             <div style={{fontSize: '0.7rem', color: '#b0b0b0', marginTop: '16px'}}>© 2023 INSTAGRAM FROM META</div>
-            <div style={{marginTop: '30px'}}>
-              <form ref={postAddForm}>
-                <input type='text' name='content' placeholder='content' />
-                <input type='text' name='filename' placeholder='filename' />
-                <input type='text' name='category' placeholder='category' />
-                <br /><br />
-                <button type="button" onClick={() => {testAdd()}}>데이터 넣기</button>
-              </form>
-              
-            </div>
           </Col>
         </Row>
       </div>

@@ -29,17 +29,35 @@ sequelize
     console.log(err);
   });
 
-app.use(
-  cors({
-    origin: [
-      process.env.LOCAL_HOST,
-      process.env.NAVER_HOST,
-      process.env.AWS_HOST,
-    ],
-    credentials: true,
-    // eslint-disable-next-line comma-dangle
-  })
-);
+if (process.env.NODE_ENV === 'production') {
+  app.use(
+    cors({
+      origin: [process.env.SERVER_HOST, process.env.SERVER2_HOST],
+      credentials: true,
+      // eslint-disable-next-line comma-dangle
+    })
+  );
+} else {
+  app.use(
+    cors({
+      origin: [process.env.LOCAL_HOST],
+      credentials: true,
+      // eslint-disable-next-line comma-dangle
+    })
+  );
+}
+
+// app.use(
+//   cors({
+//     origin: [
+//       process.env.LOCAL_HOST,
+//       process.env.NAVER_HOST,
+//       process.env.AWS_HOST,
+//     ],
+//     credentials: true,
+//     // eslint-disable-next-line comma-dangle
+//   })
+// );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -74,6 +92,8 @@ app.use(session(sessionOption));
 
 const router = require('./routes');
 
+app.use('/static', express.static(__dirname + '/data/postImage'));
+// app.use('/static', express.static(__dirname + '/data/mateTextEditorImg'));
 app.use('/', router);
 
 app.get('*', (req, res) => {

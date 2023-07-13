@@ -5,6 +5,8 @@ const controllerPostData = require('../controller/postDataList');
 
 const router = express.Router();
 
+const { ImageFileHandler } = require('../middle/multer');
+
 // const { sendVerificationSMS } = require('../controller/naverSensUtill');
 // 나중에 post로 변경하면 됨
 // 네이버 SMS API 인증 요청
@@ -44,5 +46,10 @@ router.post('/post/data', controllerPostData.defaultData);
 
 // 포스트 데이터 추가하기 (테스트용)
 router.post('/post/data/add', controllerPostData.testAddData);
+router.post(
+  '/post/data/add2',
+  ImageFileHandler('postImage').single('postImage'),
+  controllerPostData.postAdd
+);
 
 module.exports = router;

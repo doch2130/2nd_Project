@@ -5,6 +5,7 @@ import Login from './Login';
 import Register from './Register';
 import Home from './Main/Home';
 import NotFound from './Error/NotFound';
+import Modal from './Modal';
 
 export default function CombineComponents() {
   const isLogin = useSelector((state) => state.loginStatus.isLogin);
@@ -20,6 +21,7 @@ export default function CombineComponents() {
         <Route path="/home" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Modal />
     </>
   )
 }

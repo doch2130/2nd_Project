@@ -40,11 +40,12 @@ function App() {
         alert('로그인이 만료되었습니다. 다시 로그인 해야 합니다.');
         navigate('/login');
       }
+      setIsLoding(true);
 
       // console.log('Loding Success');
-      setTimeout(() => {
-        setIsLoding(true);
-      }, 1000);
+      // setTimeout(() => {
+      //   setIsLoding(true);
+      // }, 1000);
     }
 
     if (!isLogin) {

@@ -26,6 +26,7 @@ export default function HomePost() {
   useEffect(() => {
     async function postDataInit() {
       const result = await axios.post('/post/data');
+      console.log('result ', result);
       for (let i = result.data.length-1; i >= 0; i--) {
         dispatch(postInit(result.data[i]));
       }
