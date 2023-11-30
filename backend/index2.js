@@ -33,7 +33,7 @@ console.log('process.env.NODE_ENV ', process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   app.use(
     cors({
-      origin: [process.env.SERVER_HOST, process.env.SERVER2_HOST],
+      origin: process.env.SERVER_HOST,
       credentials: true,
       // eslint-disable-next-line comma-dangle
     })
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.use(
     cors({
-      origin: [process.env.LOCAL_HOST],
+      origin: process.env.LOCAL_HOST,
       credentials: true,
       // eslint-disable-next-line comma-dangle
     })
