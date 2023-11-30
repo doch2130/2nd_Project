@@ -29,7 +29,7 @@ Source Code Github Link: https://github.com/doch2130/2nd_Project
 |<a href="https://github.com/doch2130"><img src="https://img.shields.io/badge/GitHub-181717?style=plastic&logo=GitHub&logoColor=white"/></a>| 
 
 <h3> 4. 배포 사이트 </h3>
-<a href="http://101.101.210.118:3000/"><img src="/project/public/images/logo_text.png" style="width: 200px;" /></a>
+<a href="http://52.78.154.125:3000/"><img src="/project/public/images/logo_text.png" style="width: 200px;" /></a>
 
 <h3> 5. 기술 스택 </h3>
 <h3> Front-end </h3>
