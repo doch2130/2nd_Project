@@ -1,13 +1,13 @@
 {
   "development": {
-      "host": "127.0.0.1",
+      "host": "localhost",
       "database": "hyostagram",
       "username": "hyosta",
       "password": "hyosta1234!",
       "dialect": "mysql"
   },
   "production": {
-      "host": "127.0.0.1",
+      "host": "localhost",
       "database": "hyostagram",
       "username": "hyosta",
       "password": "hyosta1234!",
